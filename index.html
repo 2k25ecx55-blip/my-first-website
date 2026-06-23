@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ocean Genesis | A 3D Journey Through Prehistoric Marine Evolution</title>
-  <meta name="description" content="An immersive interactive educational experience diving through 4.5 billion years of ocean history."/>
+  <title>Ocean Genesis | 3D Cinematic Marine Evolution</title>
+  <meta name="description" content="An immersive 3D interactive educational experience diving through 4.5 billion years of ocean history."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -20,65 +20,56 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{background:var(--ocean-dark);color:var(--slate-100);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;transition:background-color 1.4s ease;}
+    body{background:var(--ocean-dark);color:var(--slate-100);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
     ::selection{background:rgba(0,240,255,.3);color:#fff;}
     ::-webkit-scrollbar{width:6px;}
     ::-webkit-scrollbar-track{background:var(--abyss);}
     ::-webkit-scrollbar-thumb{background:rgba(0,240,255,.2);border-radius:3px;}
     ::-webkit-scrollbar-thumb:hover{background:rgba(0,240,255,.5);}
 
+    /* Cinematic Distortion Filter */
+    .cinematic-distort { filter: url(#water-distort); transition: filter 0.3s ease; }
+    .cinematic-distort:hover { filter: none; }
+
+    /* Vignette & Overlay */
+    #vignette { position: fixed; inset: 0; z-index: 9998; pointer-events: none; background: radial-gradient(circle at center, transparent 30%, rgba(0, 5, 12, 0.7) 100%); }
+
     /* Animations */
-    @keyframes pulse-slow{0%,100%{opacity:1}50%{opacity:.45}}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
     @keyframes fadeInUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes spin-slow{to{transform:rotate(360deg)}}
-    @keyframes ping{75%,100%{transform:scale(2);opacity:0}}
-    .anim-pulse{animation:pulse-slow 2.2s ease infinite;}
-    .anim-float{animation:float 6s ease infinite;}
-    .anim-bob{animation:bob 2s ease infinite;}
-    .anim-spin{animation:spin-slow 12s linear infinite;}
+    @keyframes pulse-slow{0%,100%{opacity:1}50%{opacity:.45}}
     .anim-fadeup{animation:fadeInUp .7s ease both;}
 
     /* Glass panels */
     .glass{background:rgba(0,240,255,.04);backdrop-filter:blur(14px);border:1px solid rgba(0,240,255,.18);box-shadow:0 8px 32px rgba(0,5,12,.55);}
-    .glass-green{background:rgba(13,242,163,.04);backdrop-filter:blur(14px);border:1px solid rgba(13,242,163,.18);box-shadow:0 8px 32px rgba(0,5,12,.55);}
-    .glass-dark{background:rgba(2,6,23,.75);backdrop-filter:blur(14px);border:1px solid rgba(30,41,59,.7);}
 
     /* Scanlines overlay */
     #scanlines{position:fixed;inset:0;z-index:9997;pointer-events:none;
-      background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,240,255,.022) 50%),
-        linear-gradient(90deg,rgba(255,0,0,.006),rgba(0,255,0,.003),rgba(0,0,255,.006));
+      background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,240,255,.01) 50%),
+        linear-gradient(90deg,rgba(255,0,0,.003),rgba(0,255,0,.002),rgba(0,0,255,.003));
       background-size:100% 4px,6px 100%;}
 
     /* Progress bar */
     #progress-bar{position:fixed;top:0;left:0;height:2px;z-index:9996;
       background:linear-gradient(to right,var(--coral-orange),var(--bio-cyan),var(--sea-green));
-      width:0;transition:width .3s ease;box-shadow:0 0 8px var(--bio-cyan);}
+      width:0;transition:width .3s ease;}
 
     /* BG canvas */
-    #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+    #bg-canvas{position:fixed;inset:0;z-index:0;}
 
     /* ===== SPLASH ===== */
     #splash{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;
       background:linear-gradient(to bottom,var(--ocean-dark),var(--abyss));padding:1.5rem;
-      transition:opacity .8s ease,transform .8s ease;}
-    #splash::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(0,240,255,.08) 0%,transparent 70%);pointer-events:none;}
-    #splash.hidden{opacity:0;transform:translateY(-50px);pointer-events:none;}
+      transition:opacity 1.2s ease,transform 1.2s ease;}
+    #splash.hidden{opacity:0;transform:scale(1.1);pointer-events:none;}
     .splash-inner{max-width:640px;text-align:center;position:relative;z-index:1;}
     .splash-eyebrow{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--bio-cyan);margin-bottom:1rem;animation:fadeInUp .6s ease .2s both;}
     .splash-title{font-family:'Outfit',sans-serif;font-size:clamp(2.8rem,8vw,5rem);font-weight:900;letter-spacing:-.02em;
       background:linear-gradient(135deg,#fff 20%,var(--bio-cyan) 60%,var(--sea-green) 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      filter:drop-shadow(0 0 22px rgba(0,240,255,.2));line-height:1.1;margin-bottom:1.25rem;animation:fadeInUp .7s ease .3s both;}
+      line-height:1.1;margin-bottom:1.25rem;animation:fadeInUp .7s ease .3s both;}
     .splash-desc{font-size:1rem;color:var(--slate-400);line-height:1.75;margin-bottom:2.5rem;animation:fadeInUp .7s ease .45s both;}
-    .splash-panel{border-radius:1rem;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;max-width:340px;margin:0 auto;animation:fadeInUp .7s ease .6s both;}
-    .sound-row{display:flex;align-items:center;gap:.75rem;cursor:pointer;user-select:none;}
-    .sound-row input{width:1.1rem;height:1.1rem;accent-color:var(--bio-cyan);cursor:pointer;}
-    .sound-row label{font-size:.8rem;font-weight:600;color:var(--slate-300);cursor:pointer;}
-    #enter-btn{width:100%;padding:.9rem 1.5rem;background:var(--bio-cyan);color:var(--abyss);font-family:'Outfit',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;border:none;border-radius:.875rem;cursor:pointer;box-shadow:0 0 28px rgba(0,240,255,.35);animation:pulse-slow 2s ease infinite;transition:background .2s,transform .15s;}
+    #enter-btn{width:100%;padding:.9rem 1.5rem;background:var(--bio-cyan);color:var(--abyss);font-family:'Outfit',sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;border:none;border-radius:.875rem;cursor:pointer;box-shadow:0 0 28px rgba(0,240,255,.35);transition:all .2s;}
     #enter-btn:hover{background:#fff;transform:scale(1.02);}
-    .splash-credit{margin-top:2rem;font-family:'Outfit',sans-serif;font-size:.6rem;color:var(--slate-500);letter-spacing:.2em;text-transform:uppercase;animation:fadeInUp .7s ease .8s both;}
 
     /* ===== APP ===== */
     #app{display:none;position:relative;z-index:1;}
@@ -90,1156 +81,452 @@
     .hud-logo{display:flex;align-items:center;gap:.5rem;}
     .hud-dot{width:8px;height:8px;border-radius:50%;background:var(--bio-cyan);box-shadow:0 0 8px var(--bio-cyan);animation:pulse-slow 2s ease infinite;}
     .hud-logo-text{font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:800;letter-spacing:.1em;color:#fff;}
-    .hud-controls{display:flex;align-items:center;gap:.5rem;background:rgba(2,6,23,.75);border:1px solid rgba(30,41,59,.8);border-radius:9999px;padding:.375rem .875rem;backdrop-filter:blur(14px);}
-    .hud-btn{background:none;border:none;cursor:pointer;padding:.25rem;color:var(--slate-400);font-size:.9rem;line-height:1;transition:color .2s;border-radius:4px;font-family:inherit;}
-    .hud-btn:hover{color:var(--bio-cyan);}
-    .hud-sep{color:var(--slate-800);font-size:.75rem;}
-    #hud-middle{flex:1;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0;pointer-events:none;}
 
-    /* Depth gauge */
-    #depth-gauge{pointer-events:auto;display:flex;flex-direction:column;gap:.75rem;background:rgba(2,6,23,.6);backdrop-filter:blur(14px);border:1px solid rgba(30,41,59,.65);padding:1rem;border-radius:1rem;}
-    .g-lbl{font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--slate-500);}
-    .g-track{position:relative;width:2px;height:11rem;background:var(--slate-800);margin:0 auto;border-radius:1px;}
-    .g-fill{position:absolute;bottom:0;left:0;width:2px;background:var(--bio-cyan);border-radius:1px;box-shadow:0 0 6px var(--bio-cyan);transition:height .4s ease;}
-    .g-dots{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;justify-content:space-between;height:100%;}
-    .g-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--slate-700);background:var(--slate-900);cursor:pointer;pointer-events:auto;transform:translateX(-5px);transition:all .2s;}
-    .g-dot:hover{border-color:var(--bio-cyan);}
-    .g-dot.active{background:var(--bio-cyan);border-color:#fff;transform:translateX(-5px) scale(1.35);box-shadow:0 0 10px var(--bio-cyan);}
-    .g-info{text-align:center;}
-    .g-depth{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:800;color:#fff;text-shadow:0 0 10px rgba(0,240,255,.5);display:block;}
-    .g-era{font-family:'Outfit',sans-serif;font-size:.52rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,240,255,.65);}
+    #hud-middle{flex:1;display:flex;justify-content:space-between;align-items:center;pointer-events:none;}
+    #depth-gauge{pointer-events:auto;background:rgba(2,6,23,0.6);backdrop-filter:blur(10px);padding:1rem;border-radius:1rem;border:1px solid rgba(255,255,255,0.1);}
+    .g-lbl{font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;color:var(--slate-500);display:block;margin-bottom:.5rem;}
+    .g-track{position:relative;width:2px;height:10rem;background:var(--slate-800);margin:0 auto;}
+    .g-fill{position:absolute;bottom:0;left:0;width:2px;background:var(--bio-cyan);transition:height 0.3s;}
+    .g-dots{position:absolute;top:0;left:-5px;display:flex;flex-direction:column;justify-content:space-between;height:100%;}
+    .g-dot{width:12px;height:12px;border-radius:50%;background:var(--slate-900);border:2px solid var(--slate-700);transition:all 0.3s;}
+    .g-dot.active{background:var(--bio-cyan);border-color:#fff;transform:scale(1.2);}
+    .g-info{text-align:center;margin-top:0.5rem;}
+    .g-depth{font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:800;color:#fff;display:block;}
+    .g-era{font-family:'Outfit',sans-serif;font-size:.5rem;font-weight:600;text-transform:uppercase;color:var(--bio-cyan);}
 
-    /* Module panel */
-    #module-panel{pointer-events:auto;display:flex;flex-direction:column;gap:.6rem;background:rgba(2,6,23,.6);backdrop-filter:blur(14px);border:1px solid rgba(30,41,59,.65);padding:1rem;border-radius:1rem;}
-    .mod-lbl{font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--slate-500);margin-bottom:.2rem;}
-    .mod-btn{display:flex;align-items:center;gap:.6rem;padding:.625rem 1rem;border-radius:.75rem;border:1px solid rgba(0,240,255,.12);background:rgba(15,23,42,.5);color:var(--slate-300);cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;transition:all .2s;text-align:left;white-space:nowrap;width:100%;}
-    .mod-btn:hover{border-color:rgba(0,240,255,.55);background:rgba(0,240,255,.08);color:#fff;}
-    .mod-btn .ic{color:var(--bio-cyan);font-size:1rem;}
-    .mod-btn kbd{margin-left:auto;background:var(--slate-800);padding:.15rem .4rem;border-radius:3px;font-size:.55rem;color:var(--slate-500);font-family:monospace;}
-    .mot-toggle{margin-top:.35rem;display:flex;justify-content:space-between;align-items:center;padding:.375rem .75rem;border-radius:.5rem;border:1px solid var(--slate-800);background:var(--slate-950);cursor:pointer;font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--slate-500);transition:all .2s;width:100%;}
-    .mot-toggle:hover{color:var(--slate-300);border-color:var(--slate-700);}
-    .mot-toggle.on{background:rgba(255,107,74,.12);border-color:var(--coral-orange);color:var(--coral-orange);}
-    #hud-bottom{display:flex;justify-content:space-between;align-items:center;font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--slate-500);}
+    #module-panel{pointer-events:auto;background:rgba(2,6,23,0.6);backdrop-filter:blur(10px);padding:1rem;border-radius:1rem;display:flex;flex-direction:column;gap:0.5rem;border:1px solid rgba(255,255,255,0.1);}
+    .mod-btn{display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-radius:.75rem;border:1px solid rgba(0,240,255,0.1);background:rgba(15,23,42,0.5);color:var(--slate-300);cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;transition:all 0.2s;}
+    .mod-btn:hover{background:rgba(0,240,255,0.1);border-color:var(--bio-cyan);color:#fff;}
+
+    #hud-bottom{display:flex;justify-content:space-between;padding:0.5rem;font-family:'Outfit',sans-serif;font-size:.6rem;color:var(--slate-500);text-transform:uppercase;letter-spacing:0.1em;}
 
     /* ===== ZONES ===== */
-    #zones{position:relative;z-index:10;}
-    .zone-sec{min-height:100vh;width:100%;display:flex;align-items:center;padding:7rem 1.5rem;position:relative;overflow:hidden;}
-    .zone-sec:nth-child(odd){justify-content:flex-start;padding-left:clamp(1.5rem,10vw,7rem);}
-    .zone-sec:nth-child(even){justify-content:flex-end;padding-right:clamp(1.5rem,10vw,7rem);}
-    .zone-bg{position:absolute;inset:0;z-index:-1;transition:background 1s ease;}
-    .zone-card{width:100%;max-width:480px;border-radius:1.25rem;padding:2rem;opacity:0;transition:opacity .7s ease,transform .7s ease;}
-    .zone-card.vis{opacity:1;transform:translateX(0)!important;}
-    .zone-sec:nth-child(odd) .zone-card{transform:translateX(-50px);}
-    .zone-sec:nth-child(even) .zone-card{transform:translateX(50px);}
-    .z-time{font-family:'Outfit',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.22em;display:block;margin-bottom:.5rem;}
-    .z-name{font-family:'Outfit',sans-serif;font-size:1.875rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem;}
-    .z-desc{font-size:.875rem;color:var(--slate-300);line-height:1.78;border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;margin-top:.5rem;}
-    .z-mlbl{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:700;color:var(--slate-400);text-transform:uppercase;letter-spacing:.15em;display:block;margin-top:1rem;margin-bottom:.35rem;border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;}
-    .z-mile{font-size:.8rem;font-weight:600;color:#fff;}
-    .z-acts{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem;border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;}
-    .z-act{display:flex;align-items:center;gap:.4rem;background:var(--slate-900);border:1px solid var(--slate-700);color:var(--slate-300);padding:.625rem 1rem;border-radius:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;transition:all .2s;}
-    .z-act:hover{border-color:var(--bio-cyan);background:rgba(0,240,255,.08);color:#fff;}
-    .scroll-hint{display:flex;flex-direction:column;align-items:center;gap:.35rem;margin-top:1.25rem;color:var(--slate-500);font-family:'Outfit',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;font-weight:700;animation:bob 2s ease infinite;}
-    .scroll-hint svg{color:var(--slate-600);}
+    .zone-sec{min-height:100vh;display:flex;align-items:center;padding:10vh 10vw;pointer-events:none;}
+    .zone-sec:nth-child(even){justify-content:flex-end;}
+    .zone-card{width:100%;max-width:440px;padding:2.5rem;border-radius:1.5rem;opacity:0;transform:translateY(30px);transition:all 1s ease;pointer-events:auto;}
+    .zone-card.vis{opacity:1;transform:translateY(0);}
+    .z-time{font-family:'Outfit',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;display:block;margin-bottom:0.5rem;}
+    .z-name{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:1rem;}
+    .z-desc{font-size:.9rem;color:var(--slate-300);line-height:1.7;margin-bottom:1.5rem;}
+    .z-act{padding:.7rem 1.2rem;background:var(--slate-900);border:1px solid var(--slate-700);color:#fff;border-radius:.8rem;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;}
 
     /* ===== MODALS ===== */
-    .modal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.87);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s ease;}
+    .modal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity 0.3s;}
     .modal.open{opacity:1;pointer-events:auto;}
-    .mbox{background:rgba(1,11,25,.97);border:1px solid rgba(0,240,255,.25);border-radius:1.25rem;width:100%;max-height:90vh;overflow-y:auto;padding:1.75rem;transform:scale(.95);transition:transform .3s ease;position:relative;}
-    .modal.open .mbox{transform:scale(1);}
-    .mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,240,255,.12);}
-    .mtitle{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:.5rem;}
-    .mclose{background:rgba(30,41,59,.5);border:1px solid rgba(51,65,85,.6);color:var(--slate-400);width:2rem;height:2rem;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;}
-    .mclose:hover{background:rgba(0,240,255,.1);color:var(--bio-cyan);border-color:var(--bio-cyan);}
-
-    /* Globe modal layout */
-    .globe-layout{display:flex;flex-direction:column;gap:1.5rem;}
-    @media(min-width:640px){.globe-layout{flex-direction:row;align-items:center;}}
-    #globe-mount{width:100%;height:260px;border-radius:.875rem;overflow:hidden;cursor:grab;flex-shrink:0;}
-    @media(min-width:640px){#globe-mount{width:300px;height:300px;}}
-    .globe-drag-hint{text-align:center;font-size:.65rem;color:rgba(0,240,255,.55);margin-top:.5rem;font-family:'Outfit',sans-serif;letter-spacing:.1em;}
-    .globe-info-panel{flex:1;}
-    .globe-eyebrow{font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(0,240,255,.7);font-weight:700;font-family:'Outfit',sans-serif;}
-    .globe-zone-name{font-family:'Outfit',sans-serif;font-size:1.75rem;font-weight:900;color:#fff;margin:.5rem 0;}
-    .globe-text{font-size:.875rem;color:var(--slate-300);line-height:1.75;border-top:1px solid rgba(0,240,255,.1);padding-top:1rem;}
-    .globe-stats{display:flex;gap:2rem;border-top:1px solid rgba(0,240,255,.1);padding-top:1rem;margin-top:1rem;}
-    .globe-stat span:first-child{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--slate-500);}
-    .globe-stat span:last-child{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;color:#fff;}
-
-    /* Evolution Tree */
-    .tree-layout{display:flex;flex-direction:column;height:72vh;}
-    .tree-body{flex:1;display:flex;overflow:hidden;}
-    .tree-svg-wrap{flex:1;overflow:auto;background:rgba(2,6,23,.4);border-right:1px solid rgba(0,240,255,.1);padding:1rem;}
-    .tree-svg-wrap svg text{font-family:'Outfit',sans-serif;}
-    .tree-detail{width:280px;padding:1.25rem;background:rgba(2,6,23,.65);display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
-    .tree-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:.75rem;text-align:center;color:var(--slate-400);}
-    .tree-placeholder svg{opacity:.3;}
-    .tree-node-info .time-badge{display:inline-block;padding:.15rem .6rem;border-radius:4px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;background:rgba(0,240,255,.15);color:var(--bio-cyan);border:1px solid rgba(0,240,255,.2);}
-    .tree-node-info h4{font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;margin:.5rem 0;}
-    .tree-node-info p{font-size:.8rem;color:var(--slate-300);line-height:1.65;border-top:1px solid rgba(0,240,255,.1);padding-top:.75rem;}
-    .tree-node-info .cat{margin-top:.75rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--bio-cyan);font-weight:700;}
+    .mbox{background:var(--slate-950);border:1px solid rgba(0,240,255,0.2);border-radius:1.5rem;width:100%;max-width:800px;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;}
+    .mclose{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--slate-500);cursor:pointer;font-size:1.2rem;}
 
     /* Encyclopedia */
-    .enc-layout{display:flex;height:80vh;}
-    .enc-sidebar{width:260px;border-right:1px solid rgba(0,240,255,.12);display:flex;flex-direction:column;background:rgba(2,6,23,.5);flex-shrink:0;}
-    .enc-sidebar-hdr{padding:.875rem 1rem;border-bottom:1px solid rgba(0,240,255,.1);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800;color:#fff;}
-    .enc-search-wrap{padding:.75rem 1rem;border-bottom:1px solid rgba(0,240,255,.07);}
-    .enc-search{width:100%;background:var(--slate-900);border:1px solid rgba(51,65,85,.7);border-radius:.625rem;padding:.5rem .75rem;font-size:.8rem;color:var(--slate-100);outline:none;transition:border .2s;font-family:inherit;}
-    .enc-search:focus{border-color:rgba(0,240,255,.6);}
-    .enc-era-filters{padding:.5rem 1rem .75rem;display:flex;flex-wrap:wrap;gap:.35rem;border-bottom:1px solid rgba(0,240,255,.07);}
-    .era-chip{padding:.25rem .55rem;border-radius:4px;border:1px solid var(--slate-800);background:rgba(15,23,42,.4);color:var(--slate-400);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;}
-    .era-chip.on{background:rgba(0,240,255,.2);border-color:var(--bio-cyan);color:var(--bio-cyan);}
-    .enc-list{flex:1;overflow-y:auto;padding:.5rem;}
-    .enc-list-item{width:100%;text-align:left;padding:.75rem;border-radius:.625rem;border:1px solid rgba(30,41,59,.6);background:rgba(15,23,42,.35);margin-bottom:.35rem;cursor:pointer;transition:all .2s;}
-    .enc-list-item:hover,.enc-list-item.on{background:rgba(0,240,255,.08);border-color:var(--bio-cyan);color:#fff;}
-    .enc-list-item .nm{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;color:#fff;display:flex;justify-content:space-between;}
-    .enc-list-item .sn{font-size:.7rem;color:var(--slate-500);font-style:italic;}
-    .enc-list-item .era-tag{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--slate-600);}
-    .enc-main{flex:1;overflow-y:auto;padding:1.5rem;}
-    .enc-badge{display:inline-block;padding:.2rem .7rem;border-radius:4px;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;background:rgba(0,240,255,.15);color:var(--bio-cyan);border:1px solid rgba(0,240,255,.2);margin-bottom:.75rem;}
-    .enc-h2{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 0 20px rgba(0,240,255,.2);}
-    .enc-sci{font-size:.85rem;font-style:italic;color:var(--slate-400);margin-bottom:1.25rem;}
-    .enc-media{height:220px;border-radius:1rem;border:1px solid rgba(0,240,255,.15);background:rgba(2,6,23,.6);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:1.25rem;}
-    #enc-3d{width:100%;height:100%;cursor:grab;}
-    .enc-card-bg{width:100%;height:100%;padding:1.5rem;display:flex;flex-direction:column;justify-between;background:linear-gradient(135deg,rgba(15,23,42,.4),rgba(2,6,23,.9));}
-    .enc-card-desc{font-size:.85rem;color:var(--slate-300);line-height:1.7;max-width:420px;}
-    .enc-card-meta{display:flex;gap:1rem;align-items:center;border-top:1px solid rgba(0,240,255,.1);padding-top:.875rem;margin-top:auto;}
-    .enc-card-meta span{font-size:.78rem;color:var(--slate-500);}
-    .enc-card-meta strong{color:var(--slate-300);}
-    .enc-3d-btn{padding:.5rem 1rem;border:1px solid rgba(0,240,255,.35);background:rgba(0,240,255,.12);color:var(--bio-cyan);border-radius:.625rem;cursor:pointer;font-size:.7rem;font-weight:700;font-family:'Outfit',sans-serif;text-transform:uppercase;letter-spacing:.1em;transition:all .2s;white-space:nowrap;}
-    .enc-3d-btn:hover{background:rgba(0,240,255,.25);}
-    .enc-size-wrap{background:rgba(2,6,23,.7);border:1px solid rgba(30,41,59,.6);border-radius:.875rem;padding:1rem;margin-bottom:1.25rem;}
-    .enc-size-lbl{font-family:'Outfit',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--bio-cyan);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
-    .enc-fact{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.2);border-left:3px solid var(--bio-cyan);border-radius:.75rem;padding:1rem;}
-    .enc-fact-lbl{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--bio-cyan);margin-bottom:.35rem;}
-    .enc-fact p{font-size:.85rem;font-style:italic;color:var(--slate-200);line-height:1.65;}
+    .enc-grid{display:grid;grid-template-columns:250px 1fr;gap:2rem;height:60vh;}
+    .enc-list{overflow-y:auto;border-right:1px solid rgba(255,255,255,0.1);padding-right:1rem;}
+    .enc-item{padding:0.75rem;border-radius:0.5rem;cursor:pointer;margin-bottom:0.4rem;border:1px solid transparent;transition:all 0.2s;}
+    .enc-item:hover{background:rgba(0,240,255,0.05);}
+    .enc-item.active{background:rgba(0,240,255,0.1);border-color:var(--bio-cyan);}
 
-    /* Education Dashboard */
-    .dash-tabs{display:flex;gap:.25rem;border-bottom:1px solid rgba(0,240,255,.12);padding-bottom:0;margin-bottom:1.25rem;}
-    .dash-tab{padding:.625rem 1rem;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:700;border:none;background:none;cursor:pointer;color:var(--slate-400);border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:.4rem;}
-    .dash-tab.on{color:var(--bio-cyan);border-bottom-color:var(--bio-cyan);}
-    .dash-tab:hover{color:var(--slate-200);}
-    .quiz-wrap{max-width:580px;margin:0 auto;}
-    .quiz-eyebrow{font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(0,240,255,.75);font-weight:700;font-family:'Outfit',sans-serif;}
-    .quiz-title{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin:.35rem 0 1.25rem;}
-    .quiz-box{background:rgba(15,23,42,.6);border:1px solid var(--slate-800);border-radius:.875rem;padding:1.25rem;}
-    .quiz-q{font-size:.95rem;font-weight:600;color:var(--slate-100);margin-bottom:1rem;line-height:1.5;}
-    .quiz-opts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
-    .quiz-opt{width:100%;text-align:left;padding:.875rem 1rem;border:1px solid var(--slate-800);border-radius:.625rem;background:rgba(2,6,23,.4);color:var(--slate-300);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:.75rem;font-family:inherit;}
-    .quiz-opt:hover:not(:disabled){border-color:var(--bio-cyan);background:rgba(0,240,255,.08);color:#fff;}
-    .quiz-opt:disabled{cursor:default;}
-    .quiz-opt.sel{border-color:var(--bio-cyan);background:rgba(0,240,255,.1);color:var(--bio-cyan);}
-    .quiz-opt.cor{border-color:var(--sea-green)!important;background:rgba(13,242,163,.1)!important;color:var(--sea-green)!important;}
-    .quiz-opt.wrg{border-color:var(--coral-orange)!important;background:rgba(255,107,74,.1)!important;color:var(--coral-orange)!important;}
-    .quiz-letter{height:1.25rem;width:1.25rem;border-radius:50%;border:1px solid var(--slate-700);display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;background:var(--slate-900);flex-shrink:0;}
-    .quiz-actions{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(30,41,59,.8);padding-top:.875rem;}
-    .quiz-retry-btn{padding:.5rem 1rem;border:1px solid var(--slate-800);border-radius:.625rem;background:none;color:var(--slate-400);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
-    .quiz-retry-btn:hover{border-color:var(--slate-600);color:var(--slate-200);}
-    .quiz-submit-btn{padding:.6rem 1.5rem;border-radius:.625rem;background:var(--bio-cyan);color:var(--abyss);font-family:'Outfit',sans-serif;font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;border:none;cursor:pointer;transition:all .2s;box-shadow:0 0 18px rgba(0,240,255,.15);}
-    .quiz-submit-btn:hover{background:#fff;}
-    .quiz-submit-btn:disabled{opacity:.45;cursor:default;}
-    .quiz-feedback{padding:1rem;border-radius:.75rem;border:1px solid;font-size:.85rem;display:flex;gap:.75rem;align-items:flex-start;margin-top:1rem;opacity:0;transition:opacity .3s ease;}
-    .quiz-feedback.show{opacity:1;}
-    .quiz-feedback.cor{background:rgba(13,242,163,.06);border-color:rgba(13,242,163,.25);}
-    .quiz-feedback.wrg{background:rgba(255,107,74,.06);border-color:rgba(255,107,74,.25);}
-    .qfb-icon{font-size:1.1rem;flex-shrink:0;}
-    .qfb-ttl{font-weight:700;color:#fff;margin-bottom:.25rem;font-family:'Outfit',sans-serif;font-size:.85rem;}
-    .qfb-exp{font-size:.78rem;color:var(--slate-400);line-height:1.6;}
-    .qfb-unlock{display:inline-block;margin-top:.5rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--sea-green);background:rgba(13,242,163,.1);padding:.2rem .6rem;border-radius:3px;border:1px solid rgba(13,242,163,.25);}
+    /* Quiz */
+    .quiz-opt{width:100%;text-align:left;padding:1rem;background:var(--slate-900);border:1px solid var(--slate-800);border-radius:0.8rem;color:#fff;cursor:pointer;margin-bottom:0.75rem;transition:all 0.2s;}
+    .quiz-opt:hover{border-color:var(--bio-cyan);}
+    .quiz-opt.cor{border-color:var(--sea-green);background:rgba(13,242,163,0.1);}
+    .quiz-opt.wrg{border-color:var(--coral-orange);background:rgba(255,107,74,0.1);}
 
-    /* Badges */
-    .badges-title{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin:.35rem 0 .5rem;}
-    .badges-sub{font-size:.8rem;color:var(--slate-400);margin-bottom:1.25rem;}
-    .badges-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem;}
-    @media(min-width:480px){.badges-grid{grid-template-columns:repeat(4,1fr);}}
-    .badge-card{border:1px solid var(--slate-800);border-radius:.875rem;padding:1rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;background:rgba(15,23,42,.4);transition:all .35s;}
-    .badge-card.on{border-color:rgba(0,240,255,.4);background:rgba(0,240,255,.06);box-shadow:0 0 18px rgba(0,240,255,.1);}
-    .badge-icon{font-size:2rem;filter:grayscale(1) opacity(.35);transition:filter .35s;}
-    .badge-card.on .badge-icon{filter:none;}
-    .badge-name{font-family:'Outfit',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate-500);}
-    .badge-card.on .badge-name{color:var(--bio-cyan);}
-    .badge-status{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding:.15rem .5rem;border-radius:3px;background:var(--slate-900);color:var(--slate-600);}
-    .badge-card.on .badge-status{background:rgba(0,240,255,.2);color:var(--bio-cyan);border:1px solid rgba(0,240,255,.2);}
-    .badge-desc{font-size:.65rem;color:var(--slate-500);line-height:1.5;}
-    .badge-card.on .badge-desc{color:var(--slate-400);}
-
-    /* Food chain */
-    .fc-title{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin:.35rem 0 .35rem;}
-    .fc-sub{font-size:.8rem;color:var(--slate-400);margin-bottom:1.25rem;}
-    .fc-box{background:rgba(15,23,42,.6);border:1px solid var(--slate-800);border-radius:.875rem;padding:1.25rem;}
-    .fc-row{display:grid;grid-template-columns:1fr;gap:.875rem;margin-bottom:1rem;}
-    @media(min-width:500px){.fc-row{grid-template-columns:repeat(3,1fr);}}
-    .fc-select-lbl{display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--slate-400);margin-bottom:.5rem;}
-    .fc-select{width:100%;background:var(--slate-950);border:1px solid var(--slate-800);border-radius:.625rem;padding:.625rem .75rem;font-size:.8rem;color:var(--slate-300);outline:none;transition:border .2s;font-family:inherit;}
-    .fc-select:focus{border-color:var(--bio-cyan);}
-    .fc-footer{display:flex;gap:.75rem;justify-content:flex-end;border-top:1px solid rgba(30,41,59,.8);padding-top:.875rem;}
-    .fc-reset-btn{padding:.5rem 1rem;border:1px solid var(--slate-800);border-radius:.625rem;background:none;color:var(--slate-400);font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
-    .fc-reset-btn:hover{border-color:var(--slate-600);color:var(--slate-200);}
-    .fc-check-btn{padding:.6rem 1.5rem;border-radius:.625rem;background:var(--sea-green);color:var(--abyss);font-family:'Outfit',sans-serif;font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;border:none;cursor:pointer;transition:all .2s;box-shadow:0 0 14px rgba(13,242,163,.15);}
-    .fc-check-btn:hover{background:#fff;}
-    .fc-check-btn:disabled{opacity:.4;cursor:default;}
-    .fc-feedback{padding:1rem;border-radius:.75rem;border:1px solid;font-size:.85rem;display:flex;gap:.75rem;align-items:flex-start;margin-top:1rem;opacity:0;transition:opacity .3s ease;}
-    .fc-feedback.show{opacity:1;}
-    .fc-feedback.cor{background:rgba(13,242,163,.06);border-color:rgba(13,242,163,.25);}
-    .fc-feedback.wrg{background:rgba(255,107,74,.06);border-color:rgba(255,107,74,.25);}
-
-    /* Shortcuts */
-    .sc-row{display:flex;justify-content:space-between;align-items:center;padding:.625rem 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.85rem;color:var(--slate-300);}
-    .sc-row:last-child{border-bottom:none;}
-    .sc-row kbd{background:var(--slate-900);border:1px solid rgba(51,65,85,.8);padding:.2rem .55rem;border-radius:4px;font-size:.7rem;font-weight:700;color:var(--bio-cyan);font-family:monospace;}
-
-    @media(max-width:640px){
-      .enc-layout{flex-direction:column;height:auto;}
-      .enc-sidebar{width:100%;max-height:200px;}
-      .tree-body{flex-direction:column;}
-      .tree-detail{width:100%;height:200px;}
-      .globe-layout{flex-direction:column;}
-      .mod-btn kbd{display:none;}
-    }
+    @media(max-width:768px){ .enc-grid{grid-template-columns:1fr;} .enc-list{height:150px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.1);} }
+    .dash-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .dash-tab { padding: 0.75rem 1.25rem; background: none; border: none; color: var(--slate-500); cursor: pointer; font-family: Outfit, sans-serif; font-weight: 700; transition: all 0.2s; border-bottom: 2px solid transparent; }
+    .dash-tab.on { color: var(--bio-cyan); border-bottom-color: var(--bio-cyan); }
   </style>
 </head>
 <body>
 
 <div id="progress-bar"></div>
 <div id="scanlines"></div>
-<canvas id="bg-canvas"></canvas>
+<div id="vignette"></div>
+<div id="bg-canvas"></div>
+
+<svg style="display: none;">
+  <defs>
+    <filter id="water-distort">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+    </filter>
+  </defs>
+</svg>
 
 <!-- ===== SPLASH ===== -->
 <div id="splash">
   <div class="splash-inner">
-    <p class="splash-eyebrow">Interactive Educational Odyssey</p>
+    <p class="splash-eyebrow">A Cinematic Evolutionary Odyssey</p>
     <h1 class="splash-title">OCEAN GENESIS</h1>
-    <p class="splash-desc">Embark on a cinematic journey through the evolutionary history of underwater life. Explore continental drift, prehistoric predators, and the oxygenation processes that created our modern biosphere.</p>
-    <div class="splash-panel glass">
-      <div class="sound-row">
-        <input type="checkbox" id="snd-toggle" checked/>
-        <label for="snd-toggle">Enable synthesized atmospheric audio</label>
-      </div>
-      <button id="enter-btn" onclick="enterApp()">Enter Deep Ocean</button>
+    <p class="splash-desc">Witness 4.5 billion years of marine evolution in a high-performance 3D environment. From the chemical birth of oceans to the age of colossal predators.</p>
+    <div class="splash-panel glass cinematic-distort">
+      <button id="enter-btn" onclick="enterApp()">Initiate Descent</button>
     </div>
-    <p class="splash-credit">Museum‑Grade Presentation · Pure HTML + Three.js + CSS + JS</p>
+    <p class="splash-credit">Powered by Three.js · Educational Data Engine</p>
   </div>
 </div>
 
 <!-- ===== APP ===== -->
 <div id="app">
-  <!-- HUD -->
   <div id="hud">
     <div id="hud-top">
       <div class="hud-logo"><div class="hud-dot"></div><span class="hud-logo-text">OCEAN GENESIS</span></div>
-      <div class="hud-controls">
-        <button class="hud-btn" id="mute-btn" onclick="toggleMute()" title="Mute (M)">🔊</button>
-        <span class="hud-sep">|</span>
-        <button class="hud-btn" onclick="openModal('sc-modal')" title="Keyboard Shortcuts (?)">❓</button>
-      </div>
+      <div class="hud-controls"><button class="mod-btn" onclick="openModal('sc-modal')">⌨️</button></div>
     </div>
-
     <div id="hud-middle">
-      <div id="depth-gauge">
-        <span class="g-lbl">Depth Tracker</span>
-        <div style="position:relative;display:flex;align-items:center;justify-content:center;">
-          <div class="g-track">
-            <div class="g-fill" id="g-fill"></div>
-            <div class="g-dots" id="g-dots"></div>
-          </div>
-        </div>
-        <div class="g-info">
-          <span class="g-depth" id="g-depth">0 meters (Surface)</span>
-          <span class="g-era" id="g-era">Hadean Eon</span>
-        </div>
+      <div id="depth-gauge" class="cinematic-distort">
+        <span class="g-lbl">Depth Gauge</span>
+        <div class="g-track"><div class="g-fill" id="g-fill"></div><div class="g-dots" id="g-dots"></div></div>
+        <div class="g-info"><span class="g-depth" id="g-depth">0m</span><span class="g-era" id="g-era">Hadean</span></div>
       </div>
-
-      <div id="module-panel">
-        <span class="mod-lbl">Interactive Modules</span>
-        <button class="mod-btn" onclick="openModal('globe-modal')"><span class="ic">🌍</span>Plate Tectonics<kbd>G</kbd></button>
-        <button class="mod-btn" onclick="openModal('tree-modal')"><span class="ic">🧬</span>Evolution Tree<kbd>T</kbd></button>
-        <button class="mod-btn" onclick="openModal('enc-modal')"><span class="ic">📖</span>Creature Guide<kbd>E</kbd></button>
-        <button class="mod-btn" onclick="openModal('dash-modal')"><span class="ic">🏆</span>Quiz &amp; Badges<kbd>Q</kbd></button>
-        <button class="mot-toggle" id="mot-toggle" onclick="toggleMotion()"><span id="mot-lbl">Reduced Motion</span></button>
+      <div id="module-panel" class="cinematic-distort">
+        <span class="g-lbl">Modules</span>
+        <button class="mod-btn" onclick="openModal('globe-modal')">🌍 Tectonics</button>
+        <button class="mod-btn" onclick="openModal('tree-modal')">🧬 Evolution</button>
+        <button class="mod-btn" onclick="openModal('enc-modal')">📖 Archive</button>
+        <button class="mod-btn" onclick="openModal('dash-modal')">🏆 Research</button>
       </div>
     </div>
-
     <div id="hud-bottom">
-      <span>Scroll down to dive deeper into time</span>
-      <span id="hud-zone-lbl">Zone 1 of 8 — Birth of Oceans</span>
+      <span>Vertical Depth Tracking Active</span>
+      <span id="hud-zone-lbl">Era 1 of 8</span>
     </div>
   </div>
-
-  <!-- Zones -->
   <div id="zones"></div>
 </div>
 
-<!-- ===== MODALS ===== -->
-
-<!-- Globe -->
-<div class="modal" id="globe-modal">
-  <div class="mbox" style="max-width:780px">
-    <div class="mhdr">
-      <div class="mtitle">🌍 Plate Tectonics Viewer</div>
-      <button class="mclose" onclick="closeModal('globe-modal')">✕</button>
-    </div>
-    <div class="globe-layout">
-      <div>
-        <div id="globe-mount"></div>
-        <p class="globe-drag-hint">🔄 Drag globe to rotate plate tectonics</p>
-      </div>
-      <div class="globe-info-panel">
-        <span class="globe-eyebrow">Plate Tectonics Viewer</span>
-        <h3 class="globe-zone-name" id="globe-zone-name">Birth of Oceans</h3>
-        <p class="globe-text" id="globe-text"></p>
-        <div class="globe-stats">
-          <div class="globe-stat"><span>Ocean Coverage</span><span id="globe-coverage">70%</span></div>
-          <div class="globe-stat"><span>Tectonic Era</span><span id="globe-tec-era">Pre-Tectonic</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Evolution Tree -->
-<div class="modal" id="tree-modal">
-  <div class="mbox" style="max-width:900px;padding:0;">
-    <div class="mhdr" style="padding:1.25rem 1.5rem;margin-bottom:0;">
-      <div class="mtitle">🧬 Phylogenetic Marine Evolution Tree</div>
-      <button class="mclose" onclick="closeModal('tree-modal')">✕</button>
-    </div>
-    <div class="tree-layout">
-      <div class="tree-body">
-        <div class="tree-svg-wrap" id="tree-svg-wrap"></div>
-        <div class="tree-detail" id="tree-detail">
-          <div class="tree-placeholder">
-            <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <p style="font-size:.82rem;color:var(--slate-400);max-width:180px;">Select any node on the tree to view evolutionary details.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Encyclopedia -->
-<div class="modal" id="enc-modal">
-  <div class="mbox" style="max-width:960px;padding:0;">
-    <div class="enc-layout">
-      <div class="enc-sidebar">
-        <div class="enc-sidebar-hdr">📖 Creature Guide</div>
-        <div class="enc-search-wrap">
-          <input class="enc-search" id="enc-search" type="text" placeholder="Search species..." oninput="filterEnc()"/>
-        </div>
-        <div class="enc-era-filters" id="enc-era-filters"></div>
-        <div class="enc-list" id="enc-list"></div>
-      </div>
-      <div class="enc-main" id="enc-main">
-        <button class="mclose" onclick="closeModal('enc-modal')" style="position:absolute;top:1rem;right:1rem;">✕</button>
-        <div id="enc-detail"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Education Dashboard -->
-<div class="modal" id="dash-modal">
-  <div class="mbox" style="max-width:780px">
-    <div class="mhdr">
-      <div class="mtitle">🎓 Education Dashboard</div>
-      <button class="mclose" onclick="closeModal('dash-modal')">✕</button>
-    </div>
-    <div class="dash-tabs">
-      <button class="dash-tab on" id="tab-quiz" onclick="switchTab('quiz')">⚡ Zone Quiz Checkpoint</button>
-      <button class="dash-tab" id="tab-badges" onclick="switchTab('badges')">🏅 Badges Shelf</button>
-      <button class="dash-tab" id="tab-fc" onclick="switchTab('fc')">🕸️ Ecosystem Food Web</button>
-    </div>
-    <div id="dash-content"></div>
-  </div>
-</div>
-
-<!-- Keyboard Shortcuts -->
-<div class="modal" id="sc-modal">
-  <div class="mbox" style="max-width:400px">
-    <div class="mhdr">
-      <div class="mtitle">⌨️ Keyboard Shortcuts</div>
-      <button class="mclose" onclick="closeModal('sc-modal')">✕</button>
-    </div>
-    <div class="sc-row"><span>Plate Tectonics Globe</span><kbd>G</kbd></div>
-    <div class="sc-row"><span>Evolution Tree</span><kbd>T</kbd></div>
-    <div class="sc-row"><span>Creature Guide</span><kbd>E</kbd></div>
-    <div class="sc-row"><span>Quiz &amp; Badges</span><kbd>Q</kbd></div>
-    <div class="sc-row"><span>Mute / Unmute</span><kbd>M</kbd></div>
-    <div class="sc-row"><span>Next Zone</span><kbd>Space</kbd></div>
-    <div class="sc-row"><span>This Help Menu</span><kbd>?</kbd></div>
-    <div class="sc-row"><span>Close Any Modal</span><kbd>Esc</kbd></div>
-    <button onclick="closeModal('sc-modal')" style="margin-top:1.25rem;width:100%;padding:.55rem;background:var(--slate-900);border:1px solid var(--slate-700);color:var(--slate-300);border-radius:.625rem;cursor:pointer;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:700;text-transform:uppercase;transition:border .2s;" onmouseover="this.style.borderColor='var(--bio-cyan)'" onmouseout="this.style.borderColor='var(--slate-700)'">Close</button>
-  </div>
-</div>
+<!-- MODALS -->
+<div class="modal" id="globe-modal"><div class="mbox"><button class="mclose" onclick="closeModal('globe-modal')">✕</button><h2>🌍 Plate Tectonics</h2><div id="globe-mount" style="height:400px;margin-top:1rem;background:#000;border-radius:1rem;"></div><p id="globe-desc" style="margin-top:1rem;color:var(--slate-400);font-size:0.9rem;"></p></div></div>
+<div class="modal" id="tree-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('tree-modal')">✕</button><h2>🧬 Evolution Tree</h2><div style="display:grid;grid-template-columns:1fr 250px;gap:2rem;margin-top:1.5rem;"><div id="tree-mount" style="height:500px;overflow:auto;background:rgba(0,0,0,0.2);border-radius:1rem;"></div><div id="tree-detail" style="padding:1rem;background:rgba(255,255,255,0.05);border-radius:1rem;">Select a node to view evolutionary details.</div></div></div></div>
+<div class="modal" id="enc-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('enc-modal')">✕</button><h2>📖 Species Archive</h2><div class="enc-grid" style="margin-top:1.5rem;"><div class="enc-list" id="enc-list"></div><div class="enc-main" id="enc-main"></div></div></div></div>
+<div class="modal" id="dash-modal"><div class="mbox"><button class="mclose" onclick="closeModal('dash-modal')">✕</button><h2>🏆 Research Dashboard</h2><div class="dash-tabs"><button class="dash-tab on" id="tab-quiz" onclick="switchTab('quiz')">Zone Quiz</button><button class="dash-tab" id="tab-badges" onclick="switchTab('badges')">Badges</button></div><div id="dash-content" style="margin-top:1.5rem;"></div></div></div>
+<div class="modal" id="sc-modal"><div class="mbox"><button class="mclose" onclick="closeModal('sc-modal')">✕</button><h2>⌨️ Shortcuts</h2><p style="margin-top:1rem">G: Tectonics | T: Evolution | E: Archive | Q: Research | Esc: Close</p></div></div>
 
 <script>
 // ======================= DATA =======================
 const ZONES=[
-  {index:1,name:"Birth of Oceans",time:"4.5 Billion Years Ago",depth:"0 meters (Surface)",era:"Hadean Eon",milestone:"Earth Cooling & First Water",spotId:"stromatolite",acc:"#ff6b4a",cls:"glass",
-   bg:"linear-gradient(to bottom,rgba(80,10,0,.7),rgba(0,0,0,.95))",
-   desc:"The young Earth is an active volcanic furnace. As the crust cools below boiling point, atmospheric steam condenses into torrential rain, pooling to form the very first highly acidic, boiling oceans."},
-  {index:2,name:"First Microbial Life",time:"3.8 Billion Years Ago",depth:"150 meters (Epipelagic)",era:"Archean Eon",milestone:"Photosynthesis & Oxygenation",spotId:"stromatolite",acc:"#0df2a3",cls:"glass-green",
-   bg:"linear-gradient(to bottom,rgba(0,50,20,.7),rgba(0,0,0,.95))",
-   desc:"In warm shallow waters, microscopic cyanobacteria gather into layered rock-like mats called Stromatolites. Their metabolic byproduct—oxygen—begins to fundamentally transform Earth's atmosphere."},
-  {index:3,name:"The Cambrian Explosion",time:"541 Million Years Ago",depth:"500 meters (Mesopelagic)",era:"Cambrian Period",milestone:"Biodiversity & Shell Evolution",spotId:"anomalocaris",acc:"#00f0ff",cls:"glass",
-   bg:"linear-gradient(to bottom,rgba(0,40,60,.7),rgba(0,0,0,.95))",
-   desc:"An unprecedented evolutionary leap triggers the rapid emergence of almost all animal groups. Prehistoric arthropods like Trilobites crawl the seafloor, while the giant Anomalocaris reigns as the first apex predator."},
-  {index:4,name:"Age of Armored Fish",time:"400 Million Years Ago",depth:"1,200 meters (Bathypelagic)",era:"Devonian Period",milestone:"Jaw Structures & Armored Plates",spotId:"dunkleosteus",acc:"#0df2a3",cls:"glass-green",
-   bg:"linear-gradient(to bottom,rgba(0,30,30,.7),rgba(0,0,0,.95))",
-   desc:"The oceans are dominated by Placoderms—heavy armored fish. The apex predator Dunkleosteus rules with self-sharpening bony scissor-like shears in its jaws, snapping prey with crushing force."},
-  {index:5,name:"Marine Reptiles Era",time:"200 Million Years Ago",depth:"2,500 meters (Abyssal)",era:"Jurassic Period",milestone:"Reptiles Return to the Sea",spotId:"plesiosaur",acc:"#00f0ff",cls:"glass",
-   bg:"linear-gradient(to bottom,rgba(0,15,50,.7),rgba(0,0,0,.95))",
-   desc:"As dinosaurs rule land, giant air-breathing reptiles return to colonize the seas. Long-necked Plesiosaurs row using four massive paddle wings, while sleek, predatory Mosasaurs hunt the open shelves."},
-  {index:6,name:"Megalodon Apex Ocean",time:"15 Million Years Ago",depth:"4,000 meters (Abyssopelagic)",era:"Miocene Epoch",milestone:"Colossal Predatory Sharks",spotId:"megalodon",acc:"#ff6b4a",cls:"glass",
-   bg:"linear-gradient(to bottom,rgba(20,0,40,.7),rgba(0,0,0,.95))",
-   desc:"The largest predatory shark in history—Megalodon—swims the warm oceans. Armed with 18-centimeter serrated teeth, it feeds on giant prehistoric filter-feeding whales, patrolling vast coastal basins."},
-  {index:7,name:"Modern Ocean Systems",time:"Present Day",depth:"6,000 meters (Hadopelagic)",era:"Holocene Epoch",milestone:"Cetacean Diversity & Coral Reefs",spotId:"blue_whale",acc:"#00f0ff",cls:"glass",
-   bg:"linear-gradient(to bottom,rgba(0,10,30,.7),rgba(0,0,0,.95))",
-   desc:"A delicate web of life ranges from warm coastal coral reefs to deep abyssal plains. Mammalian whales swim with vertical fluke sweeps, and highly intelligent dolphins coordinate complex hunting pods."},
-  {index:8,name:"Anthropocene Future",time:"Year 2100+",depth:"11,000 meters (The Challenger Abyss)",era:"Anthropocene Forecast",milestone:"Eco-Monitoring & Recovery",spotId:"eco_sub",acc:"#0df2a3",cls:"glass-green",
-   bg:"linear-gradient(to bottom,rgba(0,20,10,.7),rgba(0,0,0,.95))",
-   desc:"Rising carbon levels trigger severe acid reef bleaching. In response, international researchers deploy robotic monitoring networks and solar autonomous subs to scan and restore abyssal biodiversity."}
+  {index:1,name:"Birth of Oceans",time:"4.5 BYA",depth:"0m",era:"Hadean",acc:"#ff6b4a",desc:"The cooling Earth atmosphere condenses into torrential, acidic rain, forming the first boiling oceans."},
+  {index:2,name:"The Oxygen Revolution",time:"3.8 BYA",depth:"200m",era:"Archean",acc:"#0df2a3",desc:"Cyanobacteria in stromatolite mats begin photosynthesis, fundamentally altering the planet's chemistry."},
+  {index:3,name:"Cambrian Explosion",time:"541 MYA",depth:"500m",era:"Cambrian",acc:"#00f0ff",desc:"A rapid diversification of life. Arthropods with complex eyes and hard shells colonize the seafloor."},
+  {index:4,name:"Age of Armored Fish",time:"400 MYA",depth:"1200m",era:"Devonian",acc:"#0df2a3",desc:"Placoderms like Dunkleosteus rule the seas with armored plates and massive bite forces."},
+  {index:5,name:"Marine Reptiles",time:"200 MYA",depth:"2500m",era:"Jurassic",acc:"#00f0ff",desc:"Dinosaurs of the sea. Plesiosaurs and Ichthyosaurs return to the water, evolving specialized flippers."},
+  {index:6,name:"Megalodon's Realm",time:"15 MYA",depth:"4000m",era:"Miocene",acc:"#ff6b4a",desc:"The largest predatory shark in history patrols warm coastal waters, hunting prehistoric baleen whales."},
+  {index:7,name:"Modern Biosphere",time:"Present",depth:"6000m",era:"Holocene",acc:"#00f0ff",desc:"A delicate balance of cetacean intelligence and coral reef biodiversity under modern climate patterns."},
+  {index:8,name:"Anthropocene Future",time:"2100+",depth:"11000m",era:"Future",acc:"#0df2a3",desc:"Robotic monitoring and restorative biotechnology help ecosystems survive rising temperatures."}
 ];
 
-const BODY_COLORS=['#0e0300','#001208','#00090f','#000a07','#000610','#0a0018','#000310','#000705'];
-
 const SPECIES=[
-  {id:"stromatolite",name:"Stromatolites",sci:"Laminopora antiqua",era:"Archean",time:"3.8 Billion Years Ago",habitat:"Shallow Coastal Lagoons",diet:"Photosynthesis (Microbial)",size:"1.2 meters high",len:1.2,
-   funFact:"They produced the oxygen that made all complex life on Earth possible.",
-   desc:"Layered accretionary structures formed by the trapping, binding, and cementation of sedimentary grains by biofilms of microorganisms, especially cyanobacteria.",color:"#0df2a3"},
-  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",time:"521–252 Million Years Ago",habitat:"Benthic Ocean Floor",diet:"Detritivore (Scavenger)",size:"30 centimeters long",len:.3,
-   funFact:"Trilobites were among the first animals to develop complex compound eyes.",
-   desc:"Hard-shelled, segmented marine arthropods. One of the most successful early animal groups, surviving for almost 270 million years.",color:"#00f0ff"},
-  {id:"anomalocaris",name:"Anomalocaris",sci:"Anomalocaris canadensis",era:"Cambrian",time:"508 Million Years Ago",habitat:"Pelagic Warm Seas",diet:"Carnivore (Apex Predator)",size:"1.0 meter long",len:1,
-   funFact:"Its name means 'abnormal shrimp' because its claws were discovered separate from its body.",
-   desc:"The apex predator of the Cambrian seas. It swam using flapping lobes along the sides of its body and captured prey with two jointed, spiky head appendages.",color:"#b800ff"},
-  {id:"dunkleosteus",name:"Dunkleosteus",sci:"Dunkleosteus terrelli",era:"Devonian",time:"382–358 Million Years Ago",habitat:"Deep Coastal Waters",diet:"Carnivore (Fish & Sharks)",size:"6.0 meters long",len:6,
-   funFact:"Instead of teeth, it had self-sharpening armored bony shears that snapped together.",
-   desc:"An enormous prehistoric placoderm (armored fish). One of the largest armored fish in history with a bite force rivaling modern crocodiles.",color:"#0df2a3"},
-  {id:"plesiosaur",name:"Plesiosaur",sci:"Plesiosaurus dolichodeirus",era:"Jurassic",time:"203–66 Million Years Ago",habitat:"Pelagic Lagoons & Open Seas",diet:"Piscivore (Fish & Squid)",size:"11.0 meters long",len:11,
-   funFact:"They swam by rowing their 4 paddle fins through the water, resembling underwater flight.",
-   desc:"A famous group of long-necked marine reptiles that thrived during the Mesozoic era. They breathed air and gave birth to live young in water.",color:"#00f0ff"},
-  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",time:"23–3.6 Million Years Ago",habitat:"Warm Coastal Shelf Waters",diet:"Carnivore (Giant Whales)",size:"16.0 meters long",len:16,
-   funFact:"A single Megalodon tooth can be larger than an adult human's hand (up to 18 cm).",
-   desc:"The largest shark that ever lived. A macro-predatory shark that swam warm oceans, feeding on whales and large marine mammals with jaw dimensions exceeding 2 meters.",color:"#ff6b4a"},
-  {id:"blue_whale",name:"Blue Whale",sci:"Balaenoptera musculus",era:"Modern",time:"Present Day",habitat:"Global Pelagic Oceans",diet:"Filter Feeder (Krill)",size:"30.0 meters long",len:30,
-   funFact:"A Blue Whale's tongue weighs as much as an entire adult elephant.",
-   desc:"A marine mammal belonging to the baleen whale suborder. It is the largest animal known to have ever existed in geological history.",color:"#00f0ff"},
-  {id:"eco_sub",name:"Eco-Submarine",sci:"A.E.S. Vanguard v8",era:"Future",time:"2100+ Years",habitat:"Abyssal Autonomous Monitoring",diet:"Solar / Geothermal Grid",size:"4.5 meters long",len:4.5,
-   funFact:"Equipped with automated multi-spectral lasers to analyze microplastics and coral stress.",
-   desc:"An autonomous eco-monitoring submarine deployed by conservation researchers in the future to map ocean recovery and clean up toxic sediment.",color:"#0df2a3"},
-  {id:"hallucigenia",name:"Hallucigenia",sci:"Hallucigenia sparsa",era:"Cambrian",time:"508 Million Years Ago",habitat:"Benthic Deep Channels",diet:"Detritivore (Scavenger)",size:"5 centimeters long",len:.05,
-   funFact:"Scientists originally reconstructed it upside down and backward because it was so bizarre.",
-   desc:"A tiny velvet worm-like creature with 7 pairs of long sharp spines on its back and tentacle-like legs beneath, representing early lobopodian diversity.",color:"#ff6b4a"},
-  {id:"ammonite",name:"Ammonite",sci:"Asteroceras stellare",era:"Jurassic",time:"400–66 Million Years Ago",habitat:"Shallow Shelf Basins",diet:"Carnivore (Crustaceans)",size:"80 centimeters diameter",len:.8,
-   funFact:"Ammonites are key index fossils used by geologists to date rock strata.",
-   desc:"Extinct cephalopod mollusks characterized by coiled spiral shells. Closely related to modern nautiluses, octopuses, and cuttlefish.",color:"#00f0ff"}
+  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth.",color:"#0df2a3",len:1.2},
+  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"Extremely successful armored arthropods.",color:"#00f0ff",len:0.3},
+  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The first apex predator of the oceans.",color:"#ff6b4a",len:1.0},
+  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"Armored fish with bone-shearing jaws.",color:"#0df2a3",len:6.0},
+  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Long-necked air-breathing marine reptile.",color:"#00f0ff",len:11.0},
+  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"Colossal prehistoric shark.",color:"#ff6b4a",len:16.0},
+  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"Largest animal known to have existed.",color:"#00f0ff",len:30.0}
 ];
 
 const QUIZZES={
-  1:{q:"How did the first oceans form on Earth?",opts:["Water was created by ancient bacterial processes","Steam condensed as the hot atmosphere cooled, coupled with ice meteor impacts","Glaciers covered the early molten surface","The oceans have existed since the moment Earth formed"],ans:1,exp:"As Earth cooled, steam in the atmosphere condensed into rain, pouring for thousands of years, combined with ice-rich meteors that crashed into the young planet."},
-  2:{q:"What crucial contribution did early Stromatolites make to the biosphere?",opts:["They were the first predators to hunt other bacteria","They evolved bones to form the first reefs","They produced oxygen via photosynthesis, transforming the atmosphere","They migrated to land to colonize the empty continents"],ans:2,exp:"Stromatolites, formed by cyanobacteria, performed photosynthesis which released oxygen, eventually building the ozone layer and allowing oxygen-breathing complex life to emerge."},
-  3:{q:"What was unique about the Cambrian Explosion?",opts:["A massive asteroid wiped out the dinosaurs","The oceans froze completely, creating snowball Earth","A rapid, unprecedented diversification of complex animal life occurred","Large mammals became the apex predators of the sea"],ans:2,exp:"Around 541 million years ago, the Cambrian Explosion saw the rapid emergence of almost all major animal phyla, including arthropods with shells and eyes."},
-  4:{q:"Which feature characterized the Devonian predator Dunkleosteus?",opts:["It had huge feather-like wings for high-speed leaps","Its jaw consisted of self-sharpening armored bony plates instead of teeth","It was a peaceful filter feeder that ate plankton","It could walk on land using 4 muscular legs"],ans:1,exp:"Dunkleosteus did not have teeth; instead, its skull was covered in armored plates that formed shearing scissor-like blades with jaw power that could chop prehistoric sharks in half."},
-  5:{q:"How did Mesozoic reptiles like Plesiosaurs swim?",opts:["Using horizontal tail flukes like modern whales","Undulating side-to-side like modern sharks","Rowing their four limbs like wings, in an 'underwater flight' motion","Jet propulsion, sucking in and ejecting water streams"],ans:2,exp:"Plesiosaurs possessed unique four-paddle limbs that they flapped up and down, essentially flying through water similarly to modern sea turtles and penguins."},
-  6:{q:"What did the giant shark Megalodon primarily hunt?",opts:["Tiny microscopic krill swarms","Large baleen whales and marine mammals","Volcanic mineral deposits around vents","Giant squid in the deepest ocean abyss"],ans:1,exp:"Megalodon was an apex predator of warm oceans, utilizing its massive teeth to feed on prehistoric baleen whales, seals, and other large cetaceans."},
-  7:{q:"Which biological detail differentiates whales from large sharks?",opts:["Whales have cartilage skeletons, sharks have bone","Whales swim by flexing their tail flukes vertically; sharks flex tails horizontally","Sharks give birth to live young; whales lay soft leathery eggs","Sharks possess blowholes to breathe atmospheric air"],ans:1,exp:"As mammals descended from land vertebrates, whales flex their spines up and down (vertical fluke sweep) to swim, whereas sharks flex side-to-side (lateral sweep)."},
-  8:{q:"What threat represents the greatest risk to future marine ecosystems?",opts:["Prehistoric predators like Megalodon waking up","Runaway ocean acidification, warming, and coral reef bleaching","Alien submarine exploration grids","Overabundance of deep-sea hydrothermal heat vents"],ans:1,exp:"Anthropogenic carbon emissions trigger global heating and drop oceanic pH (acidification), which dissolves calcium carbonate shells and triggers massive coral reef die-offs."}
+  1:{q:"How did the first oceans form?",opts:["Comets and steam condensation","Bacterial excretion","Melting ice caps","Always existed"],ans:0,exp:"As Earth cooled, steam in the atmosphere condensed into rain."},
+  2:{q:"What did Stromatolites release into the atmosphere?",opts:["Nitrogen","Carbon Dioxide","Oxygen","Methane"],ans:2,exp:"Photosynthesis by cyanobacteria released oxygen."},
+  3:{q:"What was the first apex predator of the sea?",opts:["Shark","Megalodon","Anomalocaris","Whale"],ans:2,exp:"Anomalocaris ruled the Cambrian seas."},
+  4:{q:"Dunkleosteus was famous for having what instead of teeth?",opts:["Baleen","Self-sharpening bony plates","Tentacles","Suction cups"],ans:1,exp:"It had armored bony shearing plates."},
+  5:{q:"How did Plesiosaurs swim?",opts:["Tail flukes","Underwater flight with 4 paddles","Jet propulsion","Walking on the bottom"],ans:1,exp:"They rowed their four massive flippers."},
+  6:{q:"What was the primary diet of Megalodon?",opts:["Plankton","Prehistoric whales","Giant squid","Coral"],ans:1,exp:"They hunted large cetaceans."},
+  7:{q:"Whales are descended from what?",opts:["Ancient sharks","Land mammals","Marine reptiles","Fish"],ans:1,exp:"Whales evolved from land-dwelling mammals."}
 };
 
-const BADGES=[
-  {id:"b1",name:"Hadean Catalyst",icon:"🌋",zone:1,desc:"Witnessed the steam condensation and chemical birth of oceans."},
-  {id:"b2",name:"Oxygen Pioneer",icon:"🦠",zone:2,desc:"Discovered stromatolite mats and the cyanobacteria oxygen revolution."},
-  {id:"b3",name:"Cambrian Explorer",icon:"🦐",zone:3,desc:"Swam alongside Anomalocaris and trilobite fossil ancestors."},
-  {id:"b4",name:"Placoderm Historian",icon:"🛡️",zone:4,desc:"Faced the armored jaws of Dunkleosteus."},
-  {id:"b5",name:"Reptilian Navigator",icon:"🦕",zone:5,desc:"Traced the rowing flight of long-necked plesiosaurs."},
-  {id:"b6",name:"Apex Megalodon",icon:"🦈",zone:6,desc:"Inspected the true fossil dimensions of Megalodon."},
-  {id:"b7",name:"Cetacean Whisperer",icon:"🐋",zone:7,desc:"Observed modern filter feeding systems in whales."},
-  {id:"b8",name:"Eco Sentinel",icon:"🤖",zone:8,desc:"Completed future climate forecasts and conservation checklists."}
-];
-
 const TREE_NODES=[
-  {id:"life",lbl:"Origin of Life",time:"3.8 BYA",desc:"First single-celled anaerobic prokaryotes emerge near thermal vents, forming stromatolite colonies.",x:80,y:250,type:"root"},
-  {id:"invertebrates",lbl:"Invertebrates",time:"600 MYA",desc:"Animals without backbone. Exploded in variety during the Cambrian Eon.",x:260,y:120,pid:"life",type:"branch"},
-  {id:"vertebrates",lbl:"Vertebrates",time:"520 MYA",desc:"Animals with a spinal cord. Started with tiny soft-bodied chordates like Pikaia.",x:260,y:380,pid:"life",type:"branch"},
-  {id:"arthropods",lbl:"Arthropods",time:"540 MYA",desc:"Exoskeletons and jointed legs. Trilobites dominated the Cambrian oceans.",x:460,y:60,pid:"invertebrates",type:"branch"},
-  {id:"mollusks",lbl:"Mollusks",time:"530 MYA",desc:"Soft bodies, often shielded by shells. Ancestors of ammonites and squids.",x:460,y:180,pid:"invertebrates",type:"branch"},
-  {id:"placoderms",lbl:"Placoderms (Armored)",time:"430 MYA",desc:"First jawed vertebrates. Had bony armor plating covering the head and thorax.",x:460,y:300,pid:"vertebrates",type:"branch"},
-  {id:"chondrichthyes",lbl:"Cartilaginous Fish",time:"420 MYA",desc:"Fish with skeletons made of cartilage instead of bone. Ancestors of sharks and rays.",x:460,y:440,pid:"vertebrates",type:"branch"},
-  {id:"trilobite",lbl:"Trilobites",time:"Cambrian",desc:"One of the most successful early animal classes; crawled ocean floors for 270 million years.",x:680,y:40,pid:"arthropods",type:"leaf"},
-  {id:"anomalocaris",lbl:"Anomalocaris",time:"Cambrian",desc:"The world's first apex predator. Had giant compound eyes and circular mouth parts.",x:680,y:100,pid:"arthropods",type:"leaf"},
-  {id:"ammonite",lbl:"Ammonites",time:"Devonian",desc:"Coiled cephalopod mollusks, closely related to modern octopuses and squids.",x:680,y:180,pid:"mollusks",type:"leaf"},
-  {id:"dunkleosteus",lbl:"Dunkleosteus",time:"Devonian",desc:"Huge armored predator with self-sharpening bony scissor jaws that could bite with crushing force.",x:680,y:260,pid:"placoderms",type:"leaf"},
-  {id:"tetrapods",lbl:"Tetrapods (To Land)",time:"Devonian",desc:"Lobe-finned fish adapted limb structures, migrating out of oceans to colonize land.",x:680,y:320,pid:"placoderms",type:"leaf"},
-  {id:"reptiles",lbl:"Marine Reptiles",time:"Triassic",desc:"Land reptiles returned to water, developing hydrodynamic flippers and lungs.",x:680,y:380,pid:"chondrichthyes",type:"branch"},
-  {id:"megalodon",lbl:"Megalodon",time:"Miocene",desc:"The largest predatory shark to ever exist, reaching up to 18 meters long.",x:680,y:460,pid:"chondrichthyes",type:"leaf"},
-  {id:"modern_sharks",lbl:"Modern Sharks",time:"Modern",desc:"Sleek cartilage predators optimized for high-speed tracking and hunting.",x:680,y:520,pid:"chondrichthyes",type:"leaf"},
-  {id:"plesiosaur",lbl:"Plesiosaurs",time:"Jurassic",desc:"Long-necked reptile that swam by 'underwater flight' using four large flippers.",x:860,y:350,pid:"reptiles",type:"leaf"},
-  {id:"mosasaur",lbl:"Mosasaurs",time:"Cretaceous",desc:"Vicious reptilian apex predators with double-hinged jaws and crocodile-like tails.",x:860,y:410,pid:"reptiles",type:"leaf"},
-  {id:"cetaceans",lbl:"Marine Mammals",time:"Eocene",desc:"Land mammals returned to the ocean 50 MYA, adapting horizontal tail flukes.",x:860,y:470,pid:"tetrapods",type:"leaf"}
+  {id:"root",lbl:"Origin of Life",desc:"The common ancestor of all life on Earth.",x:50,y:250,pid:null},
+  {id:"inv",lbl:"Invertebrates",desc:"Animals without a backbone, including trilobites and mollusks.",x:200,y:100,pid:"root"},
+  {id:"vert",lbl:"Vertebrates",desc:"Animals with a spinal column, including all fish and mammals.",x:200,y:400,pid:"root"},
+  {id:"arthro",lbl:"Arthropods",desc:"Segmented bodies and exoskeletons (e.g., Anomalocaris).",x:400,y:50,pid:"inv"},
+  {id:"mollusk",lbl:"Mollusks",desc:"Soft-bodied animals, many with shells.",x:400,y:150,pid:"inv"},
+  {id:"placoderm",lbl:"Placoderms",desc:"Ancient jawed fish with heavy armor plating.",x:400,y:300,pid:"vert"},
+  {id:"shark_anc",lbl:"Chondrichthyes",desc:"Cartilaginous fish, ancestors of modern sharks.",x:400,y:450,pid:"vert"},
+  {id:"reptile",lbl:"Marine Reptiles",desc:"Reptiles that returned to the sea (e.g., Plesiosaurs).",x:600,y:350,pid:"placoderm"},
+  {id:"mammal",lbl:"Marine Mammals",desc:"Mammals that evolved to live in the ocean (e.g., Whales).",x:600,y:250,pid:"placoderm"}
 ];
 
-const GLOBE_TEXTS=[
-  "<strong>Hadean Earth:</strong> The newly formed Earth has no stable continents. A sea of liquid magma covers the surface. Atmospheric steam begins to condense as surface temperatures drop below boiling point, creating the first highly acidic, hot volcanic oceans.",
-  "<strong>Archean Eon:</strong> Liquid water oceans have stabilized. Tectonic activity is intense but plate sizes are very small. First volcanic island chains emerge. Stromatolite microbial colonies grow in shallow coastal rims.",
-  "<strong>Cambrian Period:</strong> Continents are split. Gondwana dominates the southern hemisphere. Laurentia, Baltica, and Siberia drift separately near the equator. High sea levels flood low-lying continental shelves, creating warm, shallow nurseries for the Cambrian Explosion.",
-  "<strong>Devonian Period:</strong> Continental drift gathers pace. Laurentia and Baltica collide to form Euramerica. The Tethys Ocean starts opening, and massive shallow reef basins sustain complex armored placoderm fish ecosystems.",
-  "<strong>Triassic & Jurassic Periods:</strong> Pangea! All global landmasses have fused into a single C-shaped supercontinent centered on the equator. Its vast outer Panthalassic Ocean hosts the first giant marine reptiles like Plesiosaurs.",
-  "<strong>Neogene Period:</strong> Pangea has split. The Atlantic Ocean expands. The Tethys Ocean closes as Africa collides with Europe. Global ocean current flows shift, leading to the rise of massive filter-feeding cetaceans and the apex predator Megalodon.",
-  "<strong>Quaternary Period (Modern Day):</strong> The familiar 7 continents are in their modern configurations. The closing of the Isthmus of Panama has completely separated the Atlantic and Pacific, driving the global thermohaline ocean circulation (the ocean conveyor belt).",
-  "<strong>Anthropocene Future (2100+):</strong> Sea levels rise due to polar ice cap melting. Continental coastlines recede, flooding major delta zones. Satellite constellations and automated marine monitoring systems are deployed worldwide."
+const GLOBE_DATA=[
+  "Hadean: Magma ocean cooling, no stable plates.",
+  "Archean: Small volcanic islands emerging.",
+  "Cambrian: Gondwana and small continents near equator.",
+  "Devonian: Closing of Iapetus Ocean, Euramerica forms.",
+  "Jurassic: Pangea supercontinent beginning to rift.",
+  "Miocene: Modern continents near current positions, Tethys closing.",
+  "Modern: 7 continents in familiar positions.",
+  "Future: Coastal flooding, rising sea levels."
 ];
-const GLOBE_COVERAGE=["70%","95%","85%","80%","90%","72%","71%","73%"];
-const GLOBE_TEC=["Pre-Tectonic","Proto-Continents","Continental Drift","Continental Drift","Pangea Supercontinent","Continental Drift","Modern Plates","Modern + Rising Seas"];
 
-// ======================= STATE =======================
-let activeZone=1, scrollProg=0, isMuted=false, soundOn=true, reducedMotion=false;
-let scores={}, fcAnswered=false, fcCorrect=false, dashTab='quiz', encEra='All', encSearch='', selSpecies=SPECIES[0], selNode=null;
-let globeRenderer=null, globeAnimId=0;
-let enc3DRenderer=null, enc3DAnimId=0, enc3DActive=false;
-let audioCtx=null;
+// ======================= ENGINE =======================
+class OceanEngine {
+  constructor() {
+    this.container=document.getElementById('bg-canvas');
+    this.scene=new THREE.Scene();
+    this.camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,2000);
+    this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    this.renderer.setSize(window.innerWidth,window.innerHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    this.container.appendChild(this.renderer.domElement);
 
-// Load saved scores
-try{ scores=JSON.parse(localStorage.getItem('og_scores')||'{}'); }catch(e){}
+    this.particles=null; this.bubbles=null; this.godRays=null;
+    this.scrollTarget=0; this.scrollCurrent=0;
+    this.creatures=[];
 
-// ======================= AUDIO =======================
-function initAudio(){
-  if(audioCtx||!soundOn)return;
-  try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
-}
-function tone(freq,type,dur,vol=0.05){
-  if(!audioCtx||isMuted||!soundOn)return;
-  try{
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.connect(g);g.connect(audioCtx.destination);
-    o.type=type;o.frequency.value=freq;
-    g.gain.setValueAtTime(0,audioCtx.currentTime);
-    g.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+.05);
-    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
-    o.start();o.stop(audioCtx.currentTime+dur);
-  }catch(e){}
-}
-function playClick(){tone(440,'sine',.12,.04);}
-function playBubble(){tone(200+Math.random()*400,'sine',.3,.03);setTimeout(()=>tone(150+Math.random()*300,'sine',.2,.02),70);}
-function playSuccess(){tone(523,'sine',.2,.07);setTimeout(()=>tone(659,'sine',.2,.07),150);setTimeout(()=>tone(783,'sine',.35,.07),300);}
-function playFailure(){tone(220,'sawtooth',.35,.05);}
-function toggleMute(){
-  isMuted=!isMuted;
-  document.getElementById('mute-btn').textContent=isMuted?'🔇':'🔊';
-  playClick();
-}
-
-// ======================= PARTICLES =======================
-const CV=document.getElementById('bg-canvas'),CX=CV.getContext('2d');
-let parts=[];
-function resizeCV(){CV.width=innerWidth;CV.height=innerHeight;}
-function makeParts(){
-  parts=[];
-  for(let i=0;i<90;i++)parts.push({x:Math.random()*CV.width,y:Math.random()*CV.height,r:Math.random()*1.6+.3,sp:Math.random()*.45+.06,op:Math.random()*.5+.1,h:Math.random()>.5?'0,240,255':'13,242,163'});
-}
-function drawParts(){
-  if(!reducedMotion){
-    CX.clearRect(0,0,CV.width,CV.height);
-    parts.forEach(p=>{
-      p.y-=p.sp;p.x+=Math.sin(p.y*.02)*.35;
-      if(p.y<-8){p.y=CV.height+8;p.x=Math.random()*CV.width;}
-      CX.beginPath();CX.arc(p.x,p.y,p.r,0,Math.PI*2);
-      CX.fillStyle=`rgba(${p.h},${p.op})`;CX.fill();
-    });
+    this.init();
+    this.animate();
+    window.addEventListener('resize',()=>this.onResize());
+    this.animateDistortion();
   }
-  requestAnimationFrame(drawParts);
-}
-window.addEventListener('resize',()=>{resizeCV();makeParts();});
-resizeCV();makeParts();drawParts();
+  animateDistortion() {
+    const turb = document.querySelector('#water-distort feTurbulence');
+    let frame = 0;
+    const loop = () => {
+      frame += 0.001;
+      const bf = (0.015 + Math.sin(frame) * 0.002).toFixed(4);
+      turb.setAttribute('baseFrequency', `${bf} ${bf}`);
+      requestAnimationFrame(loop);
+    };
+    loop();
+  }
+  init() {
+    this.camera.position.z=5;
+    this.scene.fog=new THREE.FogExp2(0x010b19,0.05);
 
-// ======================= ENTER =======================
-function enterApp(){
-  soundOn=document.getElementById('snd-toggle').checked;
-  initAudio();
-  const sp=document.getElementById('splash');
-  sp.classList.add('hidden');
+    const pGeo=new THREE.BufferGeometry(); const pPos=new Float32Array(3000*3);
+    for(let i=0;i<3000*3;i++) pPos[i]=(Math.random()-0.5)*100;
+    pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+    this.particles=new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xffffff,size:0.04,transparent:true,opacity:0.4}));
+    this.scene.add(this.particles);
+
+    this.bubbles=new THREE.Group();
+    const bGeo=new THREE.SphereGeometry(0.06,8,8);
+    for(let i=0;i<120;i++){
+      const b=new THREE.Mesh(bGeo,new THREE.MeshBasicMaterial({color:0x00f0ff,transparent:true,opacity:0.2}));
+      b.position.set((Math.random()-0.5)*60,Math.random()*60-30,(Math.random()-0.5)*40);
+      b.userData.speed=0.03+Math.random()*0.06;
+      this.bubbles.add(b);
+    }
+    this.scene.add(this.bubbles);
+
+    this.godRays=new THREE.Group();
+    const grGeo=new THREE.CylinderGeometry(0,2,30,32,1,true);
+    const grMat=new THREE.MeshBasicMaterial({color:0x00f0ff,transparent:true,opacity:0.12,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});
+    for(let i=0;i<6;i++){
+      const r=new THREE.Mesh(grGeo,grMat);
+      r.position.set((Math.random()-0.5)*30,15,(Math.random()-0.5)*10);
+      r.rotation.x=Math.PI+(Math.random()-0.5)*0.3;
+      this.godRays.add(r);
+    }
+    this.scene.add(this.godRays);
+
+    this.scene.add(new THREE.AmbientLight(0xffffff,0.25));
+    const pl=new THREE.PointLight(0x00f0ff,1.5,100); pl.position.set(0,10,10); this.scene.add(pl);
+
+    this.spawnCreatures();
+  }
+  spawnCreatures() {
+    const mat=new THREE.MeshPhysicalMaterial({color:0x0a2239,emissive:0x00f0ff,emissiveIntensity:0.2,transparent:true,opacity:0.8,roughness:0.2});
+
+    // Generic Fish / Era creatures
+    for(let i=0;i<10;i++){
+      const g=this.createCreature(mat, 1.0);
+      g.position.set((Math.random()-0.5)*60, -20 - Math.random()*800, (Math.random()-0.5)*40);
+      this.scene.add(g); this.creatures.push(g);
+    }
+
+    // Detailed Megalodon (Spawns around Miocene depth)
+    const megMat=new THREE.MeshPhysicalMaterial({color:0x223344,emissive:0x00f0ff,emissiveIntensity:0.1,roughness:0.4});
+    const meg = this.createCreature(megMat, 4.0, true);
+    meg.position.set(10, -600, -10);
+    this.scene.add(meg); this.creatures.push(meg);
+  }
+  createCreature(mat, scale, isMeg=false) {
+    const g=new THREE.Group(); g.scale.set(scale,scale,scale);
+    const body=new THREE.Mesh(new THREE.SphereGeometry(0.8,16,12),mat); body.scale.set(1,1,2.5); g.add(body);
+    const head=new THREE.Mesh(new THREE.ConeGeometry(0.7,1.5,16),mat); head.rotation.x=Math.PI/2; head.position.z=1.5; g.add(head);
+
+    const finMat=mat.clone(); finMat.opacity=0.6;
+    const dFin=new THREE.Mesh(new THREE.ConeGeometry(0.2,0.8,4),finMat); dFin.position.y=0.7; dFin.rotation.x=Math.PI/3; g.add(dFin);
+    const lFin=new THREE.Mesh(new THREE.ConeGeometry(0.15,1,4),finMat); lFin.position.x=0.8; lFin.rotation.z=-Math.PI/3; g.add(lFin);
+    const rFin=lFin.clone(); rFin.position.x=-0.8; rFin.rotation.z=Math.PI/3; g.add(rFin);
+    const tail=new THREE.Mesh(new THREE.ConeGeometry(0.4,1.5,4),finMat); tail.position.z=-1.8; tail.rotation.x=-Math.PI/2; g.add(tail);
+
+    if(isMeg) {
+        // Add more detail for Megalodon: gill slits (visual via smaller cones) and second dorsal
+        const dFin2=dFin.clone(); dFin2.scale.set(0.5,0.5,0.5); dFin2.position.z=-0.8; dFin2.position.y=0.6; g.add(dFin2);
+        const jaw=new THREE.Mesh(new THREE.BoxGeometry(0.6,0.2,1), mat); jaw.position.y=-0.3; jaw.position.z=1; g.add(jaw);
+    }
+
+    g.userData.offset=Math.random()*Math.PI*2;
+    g.userData.speed=0.01+Math.random()*0.02;
+    return g;
+  }
+  onResize() { this.camera.aspect=window.innerWidth/window.innerHeight; this.camera.updateProjectionMatrix(); this.renderer.setSize(window.innerWidth,window.innerHeight); }
+  updateScroll(prog) { this.scrollTarget=prog; }
+  animate() {
+    requestAnimationFrame(()=>this.animate());
+    this.scrollCurrent+=(this.scrollTarget-this.scrollCurrent)*0.06;
+    this.camera.position.y=-this.scrollCurrent*120;
+    this.camera.rotation.x=-Math.sin(this.scrollCurrent*Math.PI)*0.15;
+
+    const depth=this.scrollCurrent;
+    this.scene.fog.density=0.04+depth*0.25;
+    const c1=new THREE.Color(0x010b19), c2=new THREE.Color(0x00050c);
+    this.scene.background=c1.clone().lerp(c2,depth);
+
+    this.particles.rotation.y+=0.001;
+    this.bubbles.children.forEach(b=>{ b.position.y+=b.userData.speed; if(b.position.y>this.camera.position.y+30) b.position.y=this.camera.position.y-30; });
+    this.godRays.children.forEach(r=>{ r.opacity=Math.max(0,0.12-depth*0.6); r.rotation.y+=0.005; });
+
+    const time=Date.now()*0.001;
+    this.creatures.forEach((c,i)=>{
+      c.position.z += Math.cos(time*0.5 + c.userData.offset)*0.05;
+      c.position.x += Math.sin(time*0.3 + c.userData.offset)*0.05;
+      c.rotation.y = Math.sin(time + i)*0.1;
+      const tail = c.children[4]; tail.rotation.z = Math.sin(time*4 + i)*0.3;
+    });
+
+    this.renderer.render(this.scene,this.camera);
+  }
+}
+
+// ======================= APP =======================
+let engine, activeZone=1, scores=JSON.parse(localStorage.getItem('og_scores')||'{}');
+
+function enterApp() {
+  document.getElementById('splash').classList.add('hidden');
   setTimeout(()=>{
-    sp.style.display='none';
-    const app=document.getElementById('app');
-    app.classList.add('visible');
-    buildZones();buildGauge();buildEncSidebar();buildTree();
-    updateHUD();
-    window.addEventListener('scroll',onScroll,{passive:true});
-  },820);
+    document.getElementById('splash').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    engine=new OceanEngine();
+    initUI();
+    window.addEventListener('scroll',()=>{
+      const prog=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+      engine.updateScroll(prog); updateHUD(prog);
+    });
+  },1200);
 }
 
-// ======================= ZONES =======================
-function buildZones(){
-  const c=document.getElementById('zones');
+function initUI() {
+  const dots=document.getElementById('g-dots');
+  const zCont=document.getElementById('zones');
   ZONES.forEach(z=>{
-    const sec=document.createElement('section');
-    sec.className='zone-sec';sec.id=`zone-${z.index}`;sec.dataset.z=z.index;
-    const bg=document.createElement('div');bg.className='zone-bg';bg.style.background=z.bg;
-    sec.appendChild(bg);
-    const card=document.createElement('div');
-    card.className=`zone-card ${z.cls}`;card.id=`zc${z.index}`;
-    card.innerHTML=`
+    const d=document.createElement('div'); d.className='g-dot'+(z.index===1?' active':''); d.id=`gd${z.index}`; dots.appendChild(d);
+    const s=document.createElement('section'); s.className='zone-sec';
+    s.innerHTML=`<div class="zone-card glass cinematic-distort">
       <span class="z-time" style="color:${z.acc}">${z.time}</span>
       <h2 class="z-name">${z.name}</h2>
       <p class="z-desc">${z.desc}</p>
-      <span class="z-mlbl">Geological Stage Milestone</span>
-      <p class="z-mile">⭐ ${z.milestone}</p>
-      <div class="z-acts">
-        <button class="z-act" onclick="openEncForZone('${z.spotId}')">ℹ️ View Spotlight Species</button>
-        <button class="z-act" onclick="openDashForZone(${z.index})">🧪 Take Zone Quiz</button>
-      </div>
-      ${z.index<8?`<div class="scroll-hint"><span>Scroll to dive</span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>`:''}
-    `;
-    sec.appendChild(card);c.appendChild(sec);
-  });
-  // IntersectionObserver for card reveal
-  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
-    if(e.isIntersecting)e.target.classList.add('vis');
-    else e.target.classList.remove('vis');
-  }),{threshold:.25});
-  document.querySelectorAll('.zone-card').forEach(el=>obs.observe(el));
-}
-
-// ======================= GAUGE =======================
-function buildGauge(){
-  const d=document.getElementById('g-dots');
-  ZONES.forEach(z=>{
-    const b=document.createElement('button');
-    b.className='g-dot'+(z.index===1?' active':'');
-    b.id=`gd${z.index}`;b.title=`Zone ${z.index}: ${z.name}`;
-    b.onclick=()=>scrollToZone(z.index);
-    d.appendChild(b);
-  });
-}
-
-// ======================= SCROLL =======================
-function onScroll(){
-  const st=window.scrollY,dh=document.documentElement.scrollHeight-innerHeight;
-  if(dh<=0)return;
-  scrollProg=Math.min(Math.max(st/dh,0),1);
-  const nz=Math.min(Math.floor(scrollProg*8)+1,8);
-  document.getElementById('g-fill').style.height=`${scrollProg*100}%`;
-  document.getElementById('progress-bar').style.width=`${scrollProg*100}%`;
-  if(nz!==activeZone){
-    activeZone=nz;
-    document.body.style.backgroundColor=BODY_COLORS[activeZone-1];
-    updateHUD();
-    playBubble();
-  }
-}
-function updateHUD(){
-  const z=ZONES[activeZone-1];
-  document.getElementById('g-depth').textContent=z.depth;
-  document.getElementById('g-era').textContent=z.era;
-  document.getElementById('hud-zone-lbl').textContent=`Zone ${activeZone} of 8 — ${z.name}`;
-  ZONES.forEach(x=>{
-    const el=document.getElementById(`gd${x.index}`);
-    if(el)el.className='g-dot'+(x.index===activeZone?' active':'');
-  });
-}
-function scrollToZone(zi){
-  playClick();
-  const dh=document.documentElement.scrollHeight-innerHeight;
-  window.scrollTo({top:((zi-1)/7.99)*dh,behavior:reducedMotion?'auto':'smooth'});
-}
-
-// ======================= MOTION =======================
-function toggleMotion(){
-  reducedMotion=!reducedMotion;
-  const b=document.getElementById('mot-toggle');
-  document.getElementById('mot-lbl').textContent=reducedMotion?'Motion Enabled':'Reduced Motion';
-  b.classList.toggle('on',reducedMotion);
-  playClick();
-}
-
-// ======================= MODALS =======================
-function openModal(id){
-  playClick();
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow='hidden';
-  if(id==='globe-modal')setTimeout(buildGlobe,60);
-  if(id==='dash-modal')renderDash();
-}
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow='';
-  if(id==='globe-modal')destroyGlobe();
-  if(id==='enc-modal')destroyEnc3D();
-}
-document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id);}));
-
-// ======================= GLOBE (Three.js) =======================
-function buildGlobe(){
-  destroyGlobe();
-  const z=ZONES[activeZone-1];
-  const cont=document.getElementById('globe-mount');
-  const w=cont.clientWidth,h=cont.clientHeight;
-
-  const scene=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(45,w/h,.1,10);
-  cam.position.z=3.5;
-  globeRenderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  globeRenderer.setSize(w,h);
-  globeRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  cont.appendChild(globeRenderer.domElement);
-
-  const al=new THREE.AmbientLight(0xffffff,.4);scene.add(al);
-  const dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(5,3,5);scene.add(dl);
-  const pl=new THREE.PointLight(0x00f0ff,1.0,10);pl.position.set(-2,1,-2);scene.add(pl);
-
-  // Build canvas texture
-  const tc=document.createElement('canvas');tc.width=1024;tc.height=512;
-  const ctx=tc.getContext('2d');
-  const zi=activeZone-1;
-  if(zi===0){
-    ctx.fillStyle='#ff2a00';ctx.fillRect(0,0,1024,512);
-    ctx.fillStyle='#1e1310';
-    for(let i=0;i<40;i++){ctx.beginPath();ctx.arc(Math.random()*1024,Math.random()*512,15+Math.random()*35,0,Math.PI*2);ctx.fill();}
-  }else{
-    ctx.fillStyle='#010e21';ctx.fillRect(0,0,1024,512);
-    ctx.strokeStyle='rgba(0,240,255,.08)';ctx.lineWidth=1;
-    for(let y=32;y<512;y+=32){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1024,y);ctx.stroke();}
-    for(let x=64;x<1024;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,512);ctx.stroke();}
-    if(zi===1){ctx.fillStyle='#183e2b';for(let i=0;i<15;i++){ctx.beginPath();ctx.arc(200+Math.random()*600,100+Math.random()*300,5+Math.random()*10,0,Math.PI*2);ctx.fill();}}
-    else if(zi===2||zi===3){ctx.fillStyle='#00c3ff';ctx.beginPath();ctx.ellipse(500,380,280,100,Math.PI/12,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(250,180,110,70,-Math.PI/15,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(800,200,70,0,Math.PI*2);ctx.arc(700,150,50,0,Math.PI*2);ctx.fill();}
-    else if(zi===4){ctx.fillStyle='#0df2a3';ctx.beginPath();ctx.moveTo(250,100);ctx.bezierCurveTo(450,80,650,120,600,250);ctx.bezierCurveTo(550,360,420,420,280,380);ctx.bezierCurveTo(200,360,180,300,280,260);ctx.bezierCurveTo(380,230,480,240,450,190);ctx.bezierCurveTo(420,150,300,180,220,150);ctx.closePath();ctx.fill();}
-    else{ctx.fillStyle=zi===7?'#0df2a3':'#00f0ff';ctx.fillRect(180,120,160,100);ctx.beginPath();ctx.moveTo(280,240);ctx.lineTo(340,240);ctx.lineTo(300,420);ctx.closePath();ctx.fill();ctx.fillRect(450,80,320,120);ctx.beginPath();ctx.moveTo(480,220);ctx.lineTo(580,220);ctx.lineTo(560,360);ctx.lineTo(510,320);ctx.closePath();ctx.fill();ctx.beginPath();ctx.arc(780,360,50,0,Math.PI*2);ctx.fill();}
-  }
-
-  const tex=new THREE.CanvasTexture(tc);
-  let mat;
-  if(zi===0){mat=new THREE.MeshStandardMaterial({map:tex,roughness:.8,metalness:.2,emissive:new THREE.Color(0xff4400),emissiveIntensity:.6});}
-  else{mat=new THREE.MeshStandardMaterial({map:tex,roughness:.3,metalness:.1,bumpMap:tex,bumpScale:.05});}
-  const globe=new THREE.Mesh(new THREE.SphereGeometry(1,32,32),mat);
-  scene.add(globe);
-
-  const atMat=new THREE.ShaderMaterial({
-    transparent:true,blending:THREE.AdditiveBlending,side:THREE.BackSide,
-    uniforms:{color:{value:new THREE.Color(zi===0?0xff4f22:0x00f0ff)}},
-    vertexShader:`varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-    fragmentShader:`varying vec3 vN;uniform vec3 color;void main(){float i=pow(.6-dot(vN,vec3(0,0,1.)),2.);gl_FragColor=vec4(color,i*.45);}`
-  });
-  const atmos=new THREE.Mesh(new THREE.SphereGeometry(1.05,32,32),atMat);
-  scene.add(atmos);
-
-  let drag=false,prevM={x:0,y:0};
-  const md=e=>{drag=true;prevM={x:e.clientX,y:e.clientY};};
-  const mm=e=>{if(!drag)return;globe.rotation.y+=(e.clientX-prevM.x)*.005;globe.rotation.x+=(e.clientY-prevM.y)*.005;atmos.rotation.y+=(e.clientX-prevM.x)*.005;atmos.rotation.x+=(e.clientY-prevM.y)*.005;prevM={x:e.clientX,y:e.clientY};};
-  const mu=()=>{drag=false;};
-  const ts=e=>{drag=true;if(e.touches.length>0)prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};};
-  const tm=e=>{if(!drag||!e.touches.length)return;globe.rotation.y+=(e.touches[0].clientX-prevM.x)*.008;globe.rotation.x+=(e.touches[0].clientY-prevM.y)*.008;atmos.rotation.y+=(e.touches[0].clientX-prevM.x)*.008;atmos.rotation.x+=(e.touches[0].clientY-prevM.y)*.008;prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};};
-  cont.addEventListener('mousedown',md);window.addEventListener('mousemove',mm);window.addEventListener('mouseup',mu);
-  cont.addEventListener('touchstart',ts);window.addEventListener('touchmove',tm);window.addEventListener('touchend',mu);
-
-  const loop=()=>{globeAnimId=requestAnimationFrame(loop);if(!drag){globe.rotation.y+=.003;atmos.rotation.y+=.003;}globeRenderer.render(scene,cam);};
-  loop();
-
-  // Update info panel
-  document.getElementById('globe-zone-name').textContent=z.name;
-  document.getElementById('globe-text').innerHTML=GLOBE_TEXTS[zi];
-  document.getElementById('globe-coverage').textContent=GLOBE_COVERAGE[zi];
-  document.getElementById('globe-tec-era').textContent=GLOBE_TEC[zi];
-}
-function destroyGlobe(){
-  cancelAnimationFrame(globeAnimId);
-  if(globeRenderer){
-    const c=document.getElementById('globe-mount');
-    if(c&&c.contains(globeRenderer.domElement))c.removeChild(globeRenderer.domElement);
-    globeRenderer.dispose();globeRenderer=null;
-  }
-}
-
-// ======================= EVOLUTION TREE =======================
-function buildTree(){
-  const wrap=document.getElementById('tree-svg-wrap');
-  // Build SVG with bezier paths + circles
-  let paths='',circles='',labels='';
-  TREE_NODES.forEach(n=>{
-    if(!n.pid)return;
-    const p=TREE_NODES.find(x=>x.id===n.pid);
-    if(!p)return;
-    const mx=(p.x+n.x)/2;
-    paths+=`<path d="M${p.x} ${p.y} C${mx} ${p.y},${mx} ${n.y},${n.x} ${n.y}" fill="none" stroke="rgba(0,240,255,.15)" stroke-width="3" stroke-linecap="round"/>`;
-  });
-  TREE_NODES.forEach(n=>{
-    let fill='#0f172a',stroke='rgba(0,240,255,.4)';
-    if(n.type==='root'){fill='#7c1d06';stroke='rgba(255,107,74,.7)';}
-    else if(n.type==='branch'){fill='#020617';stroke='rgba(13,242,163,.55)';}
-    circles+=`<g class="tree-node" data-id="${n.id}" style="cursor:pointer" onclick="selectTreeNode('${n.id}')">
-      <circle cx="${n.x}" cy="${n.y}" r="14" fill="transparent" stroke="transparent" class="tree-hover-ring"/>
-      <circle cx="${n.x}" cy="${n.y}" r="6" fill="${fill}" stroke="${stroke}" stroke-width="2.5" class="tree-core"/>
-      <text x="${n.x}" y="${n.y-14}" text-anchor="middle" font-size="10" fill="#cbd5e1" font-family="Outfit,sans-serif" font-weight="600">${n.lbl}</text>
-    </g>`;
-  });
-  wrap.innerHTML=`<div style="min-width:980px;min-height:600px;position:relative">
-    <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 980 600">
-      <defs><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter></defs>
-      ${paths}${circles}
-    </svg>
-  </div>`;
-}
-function selectTreeNode(id){
-  playClick();
-  selNode=TREE_NODES.find(n=>n.id===id);
-  // Highlight selected
-  document.querySelectorAll('.tree-core').forEach(el=>el.setAttribute('fill',el.closest('.tree-node').dataset.id===id?'#00f0ff':null));
-  // Update detail panel
-  const d=document.getElementById('tree-detail');
-  if(!selNode){return;}
-  const catMap={root:'Evolutionary Anchor',branch:'Major Divergence',leaf:'Specific Evolutionary Class'};
-  d.innerHTML=`<div class="tree-node-info">
-    <span class="time-badge">${selNode.time}</span>
-    <h4>${selNode.lbl}</h4>
-    <p>${selNode.desc}</p>
-    <div class="cat">${catMap[selNode.type]}</div>
-  </div>
-  <div style="border-top:1px solid rgba(0,240,255,.1);padding-top:1rem;margin-top:auto;text-align:center;">
-    <p style="font-size:.6rem;color:var(--slate-500);font-family:'Outfit',sans-serif;text-transform:uppercase;letter-spacing:.12em;">Evolutionary tree based on latest scientific paleontology.</p>
-  </div>`;
-}
-
-// ======================= ENCYCLOPEDIA =======================
-let encFiltered=SPECIES.slice();
-function buildEncSidebar(){
-  const eras=['All','Archean','Cambrian','Devonian','Jurassic','Miocene','Modern','Future'];
-  const ef=document.getElementById('enc-era-filters');
-  eras.forEach(e=>{
-    const b=document.createElement('button');
-    b.className='era-chip'+(e==='All'?' on':'');b.textContent=e;
-    b.onclick=()=>{encEra=e;filterEnc();document.querySelectorAll('.era-chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');playClick();};
-    ef.appendChild(b);
-  });
-  filterEnc();
-}
-function filterEnc(){
-  encSearch=document.getElementById('enc-search')?.value||'';
-  encFiltered=SPECIES.filter(s=>{
-    const mS=s.name.toLowerCase().includes(encSearch.toLowerCase())||s.sci.toLowerCase().includes(encSearch.toLowerCase());
-    const mE=encEra==='All'||s.era===encEra;
-    return mS&&mE;
-  });
-  renderEncList();
-}
-function renderEncList(){
-  const el=document.getElementById('enc-list');
-  if(!el)return;
-  el.innerHTML='';
-  if(!encFiltered.length){el.innerHTML='<p style="font-size:.78rem;color:var(--slate-500);text-align:center;padding:2rem .5rem;">No results found.</p>';return;}
-  encFiltered.forEach(s=>{
-    const b=document.createElement('button');
-    b.className='enc-list-item'+(s.id===selSpecies.id?' on':'');
-    b.onclick=()=>{selSpecies=s;playClick();renderEncList();renderEncDetail();destroyEnc3D();};
-    b.innerHTML=`<div class="nm">${s.name}<span class="era-tag">${s.era}</span></div><div class="sn">${s.sci}</div>`;
-    el.appendChild(b);
-  });
-}
-function renderEncDetail(){
-  const m=document.getElementById('enc-detail');
-  const s=selSpecies;
-  const maxM=Math.max(32,s.len+4),ppM=560/maxM;
-  m.innerHTML=`
-    <span class="enc-badge">${s.time}</span>
-    <h2 class="enc-h2">${s.name}</h2>
-    <p class="enc-sci">${s.sci}</p>
-    <div class="enc-media" id="enc-media-wrap">
-      <div class="enc-card-bg" id="enc-card-bg">
-        <div>
-          <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--slate-500);margin-bottom:.5rem;font-weight:700;">Sub-Aquatic Biosphere Profile</p>
-          <p class="enc-card-desc">${s.desc}</p>
-        </div>
-        <div class="enc-card-meta">
-          <span>Diet: <strong>${s.diet}</strong></span>
-          <span style="color:var(--slate-700)">|</span>
-          <span>Habitat: <strong>${s.habitat}</strong></span>
-          <button class="enc-3d-btn" onclick="launchEnc3D()" style="margin-left:auto">👁 View 3D Model</button>
-        </div>
-      </div>
-    </div>
-    <div class="enc-size-wrap">
-      <div class="enc-size-lbl"><span style="width:6px;height:6px;border-radius:50%;background:var(--bio-cyan);animation:ping 1s infinite;display:inline-block"></span>Comparative Diver Scale Chart</div>
-      <canvas id="size-canvas" width="560" height="170" style="width:100%;max-width:560px;height:170px;display:block;margin:0 auto"></canvas>
-    </div>
-    <div class="enc-fact">
-      <div class="enc-fact-lbl">Evolutionary Significance & Fact</div>
-      <p>"${s.funFact}"</p>
+      <button class="z-act" onclick="openModal('dash-modal')">Take Research Quiz</button>
     </div>`;
-  // Draw size canvas
-  setTimeout(()=>{drawSizeCanvas(s);},30);
-}
-function drawSizeCanvas(s){
-  const c=document.getElementById('size-canvas');if(!c)return;
-  const ctx=c.getContext('2d'),w=c.width,h=c.height;
-  ctx.clearRect(0,0,w,h);
-  ctx.strokeStyle='rgba(0,240,255,.15)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(10,h-30);ctx.lineTo(w-10,h-30);ctx.stroke();
-  const maxM=Math.max(32,s.len+4),ppm=(w-40)/maxM;
-  // Diver
-  const dH=1.8*ppm,dX=30,dY=h-30;
-  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(dX,dY-dH+4,5,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.beginPath();
-  ctx.moveTo(dX,dY-dH+8);ctx.lineTo(dX,dY-dH/2);
-  ctx.moveTo(dX-6,dY-dH+12);ctx.lineTo(dX+6,dY-dH+12);
-  ctx.moveTo(dX,dY-dH/2);ctx.lineTo(dX-5,dY);
-  ctx.moveTo(dX,dY-dH/2);ctx.lineTo(dX+5,dY);
-  ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='10px sans-serif';ctx.fillText('Human (1.8m)',dX-28,dY-dH-10);
-  // Creature
-  const cLen=s.len,cW=cLen*ppm,cX=100,cY=h-30;
-  ctx.fillStyle=s.color;
-  ctx.beginPath();
-  if(s.id==='stromatolite'){ctx.arc(cX+cW/2,cY,cW/2,Math.PI,0);}
-  else if(s.id==='trilobite'||s.id==='hallucigenia'){ctx.ellipse(cX+cW/2,cY-15,cW/2,Math.min(25,cW/3),0,0,Math.PI*2);}
-  else if(s.id==='ammonite'){ctx.arc(cX+cW/2,cY-cW/2,cW/2,0,Math.PI*2);}
-  else{ctx.ellipse(cX+cW/2,cY-Math.min(30,cW/5),cW/2,Math.min(30,cW/5),0,0,Math.PI*2);ctx.moveTo(cX,cY-Math.min(30,cW/5));ctx.lineTo(cX-15,cY-Math.min(30,cW/5)-15);ctx.lineTo(cX-15,cY-Math.min(30,cW/5)+15);ctx.closePath();}
-  ctx.fill();
-  ctx.fillStyle=s.color;ctx.font='11px sans-serif';ctx.fillText(`${s.name} (${s.len}m)`,cX+5,cY-Math.min(35,cW/4)-15);
-}
-function launchEnc3D(){
-  destroyEnc3D();
-  enc3DActive=true;
-  const wrap=document.getElementById('enc-media-wrap');
-  wrap.innerHTML='<div id="enc-3d"></div><button onclick="closeEnc3D()" style="position:absolute;bottom:.75rem;right:.75rem;padding:.4rem 1rem;border:1px solid rgba(0,240,255,.3);background:rgba(2,6,23,.85);color:var(--bio-cyan);border-radius:.5rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:Outfit,sans-serif;text-transform:uppercase">Show Card</button>';
-  const cont=document.getElementById('enc-3d');
-  const w=cont.clientWidth||400,h=cont.clientHeight||220;
-  const scene=new THREE.Scene();scene.background=new THREE.Color(0x000611);
-  const cam=new THREE.PerspectiveCamera(45,w/h,.1,100);cam.position.set(0,1.5,5);
-  enc3DRenderer=new THREE.WebGLRenderer({antialias:true});
-  enc3DRenderer.setSize(w,h);enc3DRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  cont.appendChild(enc3DRenderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,.35));
-  const dl1=new THREE.DirectionalLight(0x00f0ff,1.2);dl1.position.set(5,5,5);scene.add(dl1);
-  const dl2=new THREE.DirectionalLight(0xff6b4a,.8);dl2.position.set(-5,-2,-5);scene.add(dl2);
-  // Build a simple creature mesh based on species
-  const grp=buildSimpleCreature(selSpecies.id);
-  scene.add(grp);
-  let drag=false,prevX=0;
-  const md=e=>{drag=true;prevX=e.clientX;};
-  const mm=e=>{if(!drag)return;grp.rotation.y+=(e.clientX-prevX)*.01;prevX=e.clientX;};
-  const mu=()=>{drag=false;};
-  cont.addEventListener('mousedown',md);window.addEventListener('mousemove',mm);window.addEventListener('mouseup',mu);
-  let t=0;
-  const loop=()=>{
-    enc3DAnimId=requestAnimationFrame(loop);t+=.016;
-    if(!drag)grp.rotation.y=t*.3;
-    enc3DRenderer.render(scene,cam);
-  };loop();
-}
-function buildSimpleCreature(id){
-  const g=new THREE.Group();
-  const c1=new THREE.MeshPhysicalMaterial({color:0x0a2239,emissive:0x00f0ff,emissiveIntensity:.6,transparent:true,opacity:.85,roughness:.1,metalness:.1});
-  const c2=new THREE.MeshPhysicalMaterial({color:0x1a4a35,emissive:0x0df2a3,emissiveIntensity:.6,transparent:true,opacity:.85,roughness:.1,metalness:.1});
-  const c3=new THREE.MeshPhysicalMaterial({color:0x0c192c,emissive:0xff6b4a,emissiveIntensity:.6,transparent:true,opacity:.85,roughness:.1,metalness:.1});
-  if(id==='stromatolite'){
-    for(let i=0;i<5;i++){const m=new THREE.Mesh(new THREE.CylinderGeometry(.3+Math.random()*.3,.5+Math.random()*.2,1+Math.random()*.8,12),c2);m.position.set((Math.random()-.5)*1.5,(m.geometry.parameters.height/2)-1,(Math.random()-.5)*1.5);g.add(m);}
-  }else if(id==='trilobite'||id==='hallucigenia'){
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.6,12,8),c1));
-    for(let i=0;i<7;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(1.4*(1-i*.1),.2,.5),c1);s.position.z=-(i*.4);g.add(s);}
-  }else if(id==='anomalocaris'){
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.5,12,8),c1));
-    for(let i=0;i<9;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(.7*(1-i*.08),.15,.4),c1);s.position.z=-(i*.4);g.add(s);}
-    for(let i=0;i<9;i++){const l=new THREE.Mesh(new THREE.BoxGeometry(.8*(1-i*.08),.05,.35),c1);l.position.set(0,-.15,-(i*.4));l.rotation.z=-.2;g.add(l);const r=l.clone();r.rotation.z=.2;g.add(r);}
-  }else if(id==='dunkleosteus'){
-    const body=new THREE.Mesh(new THREE.SphereGeometry(1,14,10),c2);body.scale.set(1,1,1.6);g.add(body);
-    const head=new THREE.Mesh(new THREE.SphereGeometry(.9,14,10),c2);head.position.z=1.4;head.scale.set(1,1,1.2);g.add(head);
-    for(let i=0;i<4;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(.6*(1-i*.2),.5*(1-i*.2),.8,8),c2);s.rotation.x=Math.PI/2;s.position.z=-(i*.8)-1;g.add(s);}
-  }else if(id==='plesiosaur'){
-    const body=new THREE.Mesh(new THREE.SphereGeometry(1,12,10),c1);body.scale.set(1,.7,1.8);g.add(body);
-    for(let i=0;i<9;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(.2*(1-i*.07),.25*(1-i*.06),.3,8),c1);s.position.set(0,.1+i*.12,1.4+i*.3);g.add(s);}
-    for(let side of[-1,1]){const f=new THREE.Mesh(new THREE.ConeGeometry(.35,1.8,4),c1);f.rotation.x=Math.PI/2;f.position.set(side*.9,-.3,.5);f.rotation.z=side*Math.PI/2.5;g.add(f);}
-  }else if(id==='megalodon'){
-    const body=new THREE.Mesh(new THREE.SphereGeometry(1.8,14,10),c3);body.scale.set(1,1,2);g.add(body);
-    const head=new THREE.Mesh(new THREE.ConeGeometry(1.6,2,12),c3);head.rotation.x=Math.PI/2;head.position.z=2.2;g.add(head);
-    const dorsal=new THREE.Mesh(new THREE.ConeGeometry(.5,1.6,4),c3);dorsal.position.y=1.8;dorsal.rotation.x=Math.PI/2.3;dorsal.scale.set(.15,1,1);g.add(dorsal);
-    for(let i=0;i<4;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(1.2*(1-i*.2),1*(1-i*.2),1.2,8),c3);s.rotation.x=Math.PI/2;s.position.z=-(i*1.2)-1.6;g.add(s);}
-  }else if(id==='blue_whale'){
-    const body=new THREE.Mesh(new THREE.SphereGeometry(1.5,14,10),c1);body.scale.set(1,.8,3.5);g.add(body);
-    for(let i=0;i<5;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(1*(1-i*.18),.8*(1-i*.18),.9,8),c1);s.rotation.x=Math.PI/2;s.position.z=-(i*.9)-3;g.add(s);}
-    for(let side of[-1,1]){const f=new THREE.Mesh(new THREE.ConeGeometry(.6,2.8,4),c1);f.rotation.x=Math.PI/2;f.position.set(side*1.4,-.3,.5);f.rotation.z=side*Math.PI/2.8;g.add(f);}
-  }else if(id==='eco_sub'){
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(.6,.6,3,16),c2));
-    const nose=new THREE.Mesh(new THREE.ConeGeometry(.6,.8,16),c2);nose.rotation.x=-Math.PI/2;nose.position.y=1.9;g.add(nose);
-    for(let i=0;i<3;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(.05,.05,.8),new THREE.MeshBasicMaterial({color:0x00f0ff}));s.position.set((i-.9)*.3,.6+.3*i,0);g.add(s);}
-  }else{
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.8,12,10),c1));
-    for(let i=0;i<5;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(.5*(1-i*.15),.4*(1-i*.12),.6,8),c1);s.rotation.x=Math.PI/2;s.position.z=-(i*.6)-.8;g.add(s);}
-  }
-  return g;
-}
-function closeEnc3D(){
-  destroyEnc3D();
-  renderEncDetail();
-}
-function destroyEnc3D(){
-  enc3DActive=false;
-  cancelAnimationFrame(enc3DAnimId);
-  if(enc3DRenderer){
-    const c=document.getElementById('enc-3d');
-    if(c&&enc3DRenderer.domElement&&c.contains(enc3DRenderer.domElement))c.removeChild(enc3DRenderer.domElement);
-    enc3DRenderer.dispose();enc3DRenderer=null;
-  }
-}
-function openEncForZone(sid){
-  selSpecies=SPECIES.find(s=>s.id===sid)||SPECIES[0];
-  openModal('enc-modal');
-  setTimeout(()=>{renderEncList();renderEncDetail();},80);
-}
-
-// ======================= EDUCATION DASHBOARD =======================
-let quizAnswered=false,quizSel=null,quizCorrect=null,fcSel={p:'',c:'',pr:''},fcDone=false;
-
-function openDashForZone(zi){
-  openModal('dash-modal');
-  // Switch to quiz tab and reset
-  switchTab('quiz');
-}
-function switchTab(t){
-  dashTab=t;
-  ['quiz','badges','fc'].forEach(x=>{
-    const el=document.getElementById(`tab-${x}`);
-    if(el)el.className='dash-tab'+(x===t?' on':'');
+    zCont.appendChild(s);
   });
-  renderDash();
-  playClick();
+  const obs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.querySelector('.zone-card').classList.add('vis'); }); },{threshold:0.5});
+  document.querySelectorAll('.zone-sec').forEach(s=>obs.observe(s));
+  renderEnc(); renderTree();
 }
-function renderDash(){
-  const c=document.getElementById('dash-content');
-  if(dashTab==='quiz')c.innerHTML=renderQuizHTML();
-  else if(dashTab==='badges')c.innerHTML=renderBadgesHTML();
-  else c.innerHTML=renderFCHTML();
-}
-function renderQuizHTML(){
-  const qz=QUIZZES[activeZone];
-  return `<div class="quiz-wrap">
-    <span class="quiz-eyebrow">Geological Checkpoint Quiz</span>
-    <h3 class="quiz-title">Zone ${activeZone} Checkpoint</h3>
-    <div class="quiz-box">
-      <p class="quiz-q">${qz.q}</p>
-      <div class="quiz-opts" id="quiz-opts">
-        ${qz.opts.map((o,i)=>`<button class="quiz-opt${quizAnswered&&i===qz.ans?' cor':quizAnswered&&quizSel===i&&i!==qz.ans?' wrg':quizSel===i&&!quizAnswered?' sel':''}" onclick="selectOpt(${i})" ${quizAnswered?'disabled':''}><span class="quiz-letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}
-      </div>
-      <div class="quiz-actions">
-        ${quizAnswered?`<button class="quiz-retry-btn" onclick="retryQuiz()">↺ Retry Checkpoint</button>`:'<div></div>'}
-        <button class="quiz-submit-btn" onclick="submitQuiz()" ${quizSel===null||quizAnswered?'disabled':''}>Submit Checkpoint</button>
-      </div>
-    </div>
-    <div class="quiz-feedback ${quizAnswered?'show':''} ${quizAnswered?(quizCorrect?'cor':'wrg'):''}">
-      ${quizAnswered?`<span class="qfb-icon">${quizCorrect?'✅':'❌'}</span><div><div class="qfb-ttl">${quizCorrect?'Checkpoint Cleared!':'Checkpoint Failed.'}</div><p class="qfb-exp">${qz.exp}</p>${quizCorrect?`<span class="qfb-unlock">🔓 Unlocked Zone ${activeZone} Achievement Badge!</span>`:''}` :''}
-      ${quizAnswered?'</div>':''}
-    </div>
-  </div>`;
-}
-function selectOpt(i){
-  if(quizAnswered)return;
-  quizSel=i;
-  renderDash();
-  playClick();
-}
-function submitQuiz(){
-  if(quizSel===null||quizAnswered)return;
-  quizAnswered=true;
-  quizCorrect=quizSel===QUIZZES[activeZone].ans;
-  if(quizCorrect){
-    scores[activeZone]=true;
-    try{localStorage.setItem('og_scores',JSON.stringify(scores));}catch(e){}
-    playSuccess();
-    // confetti-style particles
-    for(let i=0;i<30;i++)setTimeout(()=>spawnConfettiParticle(),i*50);
-  }else{playFailure();}
-  renderDash();
-}
-function retryQuiz(){quizAnswered=false;quizSel=null;quizCorrect=null;renderDash();playClick();}
-function spawnConfettiParticle(){
-  const d=document.createElement('div');
-  d.style.cssText=`position:fixed;z-index:9999;width:8px;height:8px;border-radius:50%;pointer-events:none;left:${30+Math.random()*40}%;top:70%;background:${['#00f0ff','#0df2a3','#fff'][Math.floor(Math.random()*3)]};transition:all 1.5s ease;`;
-  document.body.appendChild(d);
-  setTimeout(()=>{d.style.transform=`translate(${(Math.random()-0.5)*400}px,${-300-Math.random()*200}px) rotate(${Math.random()*720}deg)`;d.style.opacity='0';},10);
-  setTimeout(()=>d.remove(),1600);
-}
-function renderBadgesHTML(){
-  const earned=Object.keys(scores).map(Number);
-  return `<div style="max-width:580px;margin:0 auto;">
-    <span class="quiz-eyebrow">Achievements Showcase</span>
-    <h3 class="badges-title">Underwater Hall of Achievements</h3>
-    <p class="badges-sub">Clear the geological checkpoints in each zone to earn these research badges.</p>
-    <div class="badges-grid">
-      ${BADGES.map(b=>`<div class="badge-card${earned.includes(b.zone)?' on':''}">
-        <span class="badge-icon">${b.icon}</span>
-        <div class="badge-name">${b.name}</div>
-        <p class="badge-desc">${b.desc}</p>
-        <span class="badge-status">${earned.includes(b.zone)?'Completed':`Zone ${b.zone}`}</span>
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-function renderFCHTML(){
-  return `<div style="max-width:580px;margin:0 auto;">
-    <span class="quiz-eyebrow">Interactive Ecosystem Simulator</span>
-    <h3 class="fc-title">Marine Food Chain Reconstructor</h3>
-    <p class="fc-sub">Arrange organisms to complete a functioning marine food chain (Energy flow: Left to Right).</p>
-    <div class="fc-box">
-      <div class="fc-row">
-        <div><label class="fc-select-lbl">1. Primary Producer</label>
-          <select class="fc-select" id="fc-p" onchange="fcChange()" ${fcDone?'disabled':''}>
-            <option value="">Select Producer...</option>
-            <option value="stromatolite" ${fcSel.p==='stromatolite'?'selected':''}>Stromatolites (Photosynthesis)</option>
-            <option value="seaweed" ${fcSel.p==='seaweed'?'selected':''}>Marine Seaweed (Algae)</option>
-            <option value="phytoplankton" ${fcSel.p==='phytoplankton'?'selected':''}>Microscopic Phytoplankton</option>
-          </select></div>
-        <div><label class="fc-select-lbl">2. Primary Consumer</label>
-          <select class="fc-select" id="fc-c" onchange="fcChange()" ${fcDone?'disabled':''}>
-            <option value="">Select Consumer...</option>
-            <option value="microbes" ${fcSel.c==='microbes'?'selected':''}>Volcanic Micro-organisms</option>
-            <option value="trilobite" ${fcSel.c==='trilobite'?'selected':''}>Benthic Trilobites</option>
-            <option value="krill" ${fcSel.c==='krill'?'selected':''}>Zooplankton / Krill Swarms</option>
-            <option value="fish" ${fcSel.c==='fish'?'selected':''}>Ancient Armored Fish</option>
-          </select></div>
-        <div><label class="fc-select-lbl">3. Apex Predator</label>
-          <select class="fc-select" id="fc-pr" onchange="fcChange()" ${fcDone?'disabled':''}>
-            <option value="">Select Predator...</option>
-            <option value="anomalocaris" ${fcSel.pr==='anomalocaris'?'selected':''}>Anomalocaris (Cambrian)</option>
-            <option value="dunkleosteus" ${fcSel.pr==='dunkleosteus'?'selected':''}>Dunkleosteus (Devonian)</option>
-            <option value="plesiosaur" ${fcSel.pr==='plesiosaur'?'selected':''}>Plesiosaur (Jurassic)</option>
-            <option value="whale" ${fcSel.pr==='whale'?'selected':''}>Blue Whale (Filter Feeder)</option>
-          </select></div>
-      </div>
-      <div class="fc-footer">
-        ${fcDone?`<button class="fc-reset-btn" onclick="fcReset()">↺ Reset Chain</button>`:''}
-        <button class="fc-check-btn" onclick="fcCheck()" ${!fcSel.p||!fcSel.c||!fcSel.pr||fcDone?'disabled':''}>Verify Food Chain</button>
-      </div>
-    </div>
-    <div class="fc-feedback ${fcDone?'show':''} ${fcDone?(fcCorrect?'cor':'wrg'):''}">
-      ${fcDone?`<span class="qfb-icon">${fcCorrect?'✅':'❌'}</span><div><div class="qfb-ttl">${fcCorrect?'Perfect Ecological Flow!':'Ecosystem Imbalance!'}</div><p class="qfb-exp">${fcCorrect?'You successfully constructed a valid food chain. Energy transfers perfectly from producer to consumer and is consumed by the apex predator, preserving the marine ecosystem balance!':'This energy pathway is invalid. Prehistoric and modern species cannot cross-eat across their respective eras, or the selected organism is not a valid predator/consumer in this chain. Try again!'}</p></div>`:''}
-    </div>
-  </div>`;
-}
-function fcChange(){
-  fcSel.p=document.getElementById('fc-p')?.value||'';
-  fcSel.c=document.getElementById('fc-c')?.value||'';
-  fcSel.pr=document.getElementById('fc-pr')?.value||'';
-  renderDash();
-}
-function fcCheck(){
-  const {p,c,pr}=fcSel;
-  const valid=[[('stromatolite','microbes','anomalocaris')],['seaweed','trilobite','dunkleosteus'],['phytoplankton','krill','whale'],['seaweed','fish','plesiosaur']];
-  fcCorrect=(p==='stromatolite'&&c==='microbes'&&pr==='anomalocaris')||(p==='seaweed'&&c==='trilobite'&&pr==='dunkleosteus')||(p==='phytoplankton'&&c==='krill'&&pr==='whale')||(p==='seaweed'&&c==='fish'&&pr==='plesiosaur');
-  fcDone=true;
-  if(fcCorrect)playSuccess(); else playFailure();
-  renderDash();
-}
-function fcReset(){fcDone=false;fcCorrect=false;fcSel={p:'',c:'',pr:''};renderDash();playClick();}
 
-// ======================= KEYBOARD =======================
+function updateHUD(prog) {
+  const zi=Math.min(Math.floor(prog*8.01)+1,8);
+  if(zi!==activeZone){
+    activeZone=zi;
+    document.getElementById('g-fill').style.height=`${prog*100}%`;
+    document.getElementById('g-depth').textContent=ZONES[zi-1].depth;
+    document.getElementById('g-era').textContent=ZONES[zi-1].era;
+    document.getElementById('hud-zone-lbl').textContent=`Era ${zi} of 8`;
+    document.querySelectorAll('.g-dot').forEach((d,i)=>d.classList.toggle('active',i+1===zi));
+  }
+  document.getElementById('progress-bar').style.width=`${prog*100}%`;
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); if(id==='globe-modal') initGlobe(); if(id==='dash-modal') switchTab('quiz'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function renderEnc() {
+  const list=document.getElementById('enc-list');
+  SPECIES.forEach(s=>{
+    const div=document.createElement('div'); div.className='enc-item'; div.innerHTML=`<strong>${s.name}</strong><br><small>${s.era}</small>`;
+    div.onclick=()=>{
+      document.querySelectorAll('.enc-item').forEach(i=>i.classList.remove('active')); div.classList.add('active');
+      document.getElementById('enc-main').innerHTML=`<h2 style="color:${s.color}">${s.name}</h2><p><em>${s.sci}</em></p><p style="margin-top:1rem">${s.desc}</p><p style="margin-top:1rem;color:var(--slate-500)">Length: ${s.len}m</p>`;
+    };
+    list.appendChild(div);
+  });
+}
+
+function renderTree() {
+  const mount=document.getElementById('tree-mount');
+  let svg=`<svg width="800" height="500">`;
+  TREE_NODES.forEach(n=>{ if(n.pid){ const p=TREE_NODES.find(x=>x.id===n.pid); svg+=`<line x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" stroke="var(--bio-cyan)" stroke-width="2" opacity="0.3"/>`; } });
+  TREE_NODES.forEach(n=>{ svg+=`<circle cx="${n.x}" cy="${n.y}" r="10" fill="var(--abyss)" stroke="var(--bio-cyan)" stroke-width="2" style="cursor:pointer" onclick="showTreeNode('${n.id}')"/><text x="${n.x+15}" y="${n.y+5}" fill="#fff" font-size="10" style="pointer-events:none">${n.lbl}</text>`; });
+  svg+=`</svg>`; mount.innerHTML=svg;
+}
+function showTreeNode(id) {
+  const n = TREE_NODES.find(x=>x.id===id);
+  document.getElementById('tree-detail').innerHTML = `<h3>${n.lbl}</h3><p style="margin-top:1rem;color:var(--slate-300);line-height:1.6">${n.desc}</p>`;
+}
+
+function initGlobe() {
+  const mount=document.getElementById('globe-mount'); mount.innerHTML='';
+  const scene=new THREE.Scene(); const cam=new THREE.PerspectiveCamera(45,mount.clientWidth/mount.clientHeight,0.1,10);
+  const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setSize(mount.clientWidth,mount.clientHeight); mount.appendChild(renderer.domElement);
+
+  const canvas = document.createElement('canvas'); canvas.width=512; canvas.height=256; const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#002244'; ctx.fillRect(0,0,512,256); ctx.fillStyle='#0df2a3';
+  for(let i=0; i<10+activeZone*2; i++) { ctx.beginPath(); ctx.arc(Math.random()*512, Math.random()*256, 10+Math.random()*40, 0, Math.PI*2); ctx.fill(); }
+  const tex = new THREE.CanvasTexture(canvas);
+
+  const globe=new THREE.Mesh(new THREE.SphereGeometry(1,32,32),new THREE.MeshStandardMaterial({map:tex, emissive:0x00f0ff, emissiveIntensity:0.1}));
+  scene.add(globe); scene.add(new THREE.AmbientLight(0xffffff,0.8)); cam.position.z=3;
+  document.getElementById('globe-desc').textContent=GLOBE_DATA[activeZone-1];
+
+  let isDragging=false, px, py;
+  mount.onmousedown=(e)=>{ isDragging=true; px=e.clientX; py=e.clientY; };
+  window.onmousemove=(e)=>{ if(!isDragging) return; globe.rotation.y+=(e.clientX-px)*0.01; globe.rotation.x+=(e.clientY-py)*0.01; px=e.clientX; py=e.clientY; };
+  window.onmouseup=()=>{ isDragging=false; };
+
+  function anim(){ if(!document.getElementById('globe-modal').classList.contains('open')) return; requestAnimationFrame(anim); if(!isDragging) globe.rotation.y+=0.002; renderer.render(scene,cam); }
+  anim();
+}
+
+function switchTab(t) {
+    document.querySelectorAll('.dash-tab').forEach(b => b.classList.toggle('on', b.id === `tab-${t}`));
+    const content = document.getElementById('dash-content');
+    if(t === 'quiz') {
+        const qz = QUIZZES[activeZone] || QUIZZES[1];
+        content.innerHTML = `<h3>${qz.q}</h3>
+            <div style="margin-top:1rem">
+                ${qz.opts.map((o, i) => `<button class="quiz-opt" onclick="checkQuiz(${i})">${o}</button>`).join('')}
+            </div>
+            <div id="quiz-fb" style="margin-top:1.5rem"></div>`;
+    } else {
+        const earned = Object.keys(scores).filter(k => scores[k]).length;
+        content.innerHTML = `<h3>Research Badges</h3>
+            <p style="margin-bottom:1rem;color:var(--slate-400)">Milestones cleared: ${earned} of 8</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(100px, 1fr));gap:1rem;">
+                ${ZONES.map(z => `
+                    <div style="padding:1rem;background:rgba(255,255,255,${scores[z.index]?0.1:0.02});border-radius:1rem;text-align:center;border:1px solid ${scores[z.index]?'var(--bio-cyan)':'transparent'}">
+                        <div style="font-size:2rem;filter:${scores[z.index]?'none':'grayscale(1) opacity(0.3)'}">${scores[z.index]?'🏆':'🔒'}</div>
+                        <div style="font-size:0.6rem;margin-top:0.5rem">${z.era}</div>
+                    </div>
+                `).join('')}
+            </div>`;
+    }
+}
+function checkQuiz(i) {
+  const qz = QUIZZES[activeZone] || QUIZZES[1]; const fb = document.getElementById('quiz-fb');
+  if(i === qz.ans){ fb.innerHTML = `<div style="color:var(--sea-green);padding:1rem;border:1px solid;border-radius:0.5rem">✅ Correct! ${qz.exp}</div>`; scores[activeZone] = true; localStorage.setItem('og_scores', JSON.stringify(scores)); }
+  else { fb.innerHTML = `<div style="color:var(--coral-orange);padding:1rem;border:1px solid;border-radius:0.5rem">❌ Incorrect. Try again!</div>`; }
+}
+
+// Keyboard
 document.addEventListener('keydown',e=>{
   if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
   switch(e.key.toLowerCase()){
-    case 'g':e.preventDefault();document.getElementById('globe-modal').classList.contains('open')?closeModal('globe-modal'):openModal('globe-modal');break;
-    case 't':e.preventDefault();document.getElementById('tree-modal').classList.contains('open')?closeModal('tree-modal'):openModal('tree-modal');break;
-    case 'e':e.preventDefault();document.getElementById('enc-modal').classList.contains('open')?closeModal('enc-modal'):openModal('enc-modal');break;
-    case 'q':e.preventDefault();document.getElementById('dash-modal').classList.contains('open')?closeModal('dash-modal'):openModal('dash-modal');break;
-    case 'm':e.preventDefault();toggleMute();break;
-    case '?':e.preventDefault();document.getElementById('sc-modal').classList.contains('open')?closeModal('sc-modal'):openModal('sc-modal');break;
-    case ' ':if(!document.querySelector('.modal.open')){e.preventDefault();scrollToZone(Math.min(activeZone+1,8));}break;
-    case 'escape':document.querySelectorAll('.modal.open').forEach(m=>closeModal(m.id));break;
+    case 'g':openModal('globe-modal');break;
+    case 't':openModal('tree-modal');break;
+    case 'e':openModal('enc-modal');break;
+    case 'q':openModal('dash-modal');break;
+    case 'escape':document.querySelectorAll('.modal').forEach(m=>closeModal(m.id));break;
   }
 });
 </script>
