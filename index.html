@@ -224,13 +224,13 @@ const ZONES=[
 ];
 
 const SPECIES=[
-  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth through photosynthesis. These structures are built by cyanobacteria trapping sediment in thin layers.",diet:"Photosynthetic",habitat:"Shallow Marine",len:1.2,imgs:["https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800"]},
-  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"One of the earliest-known groups of arthropods. They flourished in Palezoic oceans for over 270 million years.",diet:"Detritivore",habitat:"Benthic (Seafloor)",len:0.3,imgs:["https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800"]},
-  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The 'abnormal shrimp' was a giant predator with complex eyes and grasping frontal appendages.",diet:"Carnivore",habitat:"Pelagic",len:1.0,imgs:["https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800"]},
-  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"An apex predator armored fish. Instead of teeth, it possessed two pairs of sharp bony plates which formed a beak-like structure.",diet:"Apex Carnivore",habitat:"Coastal/Deep",len:6.0,imgs:["https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"]},
-  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Famous for its long neck and four large flippers. Plesiosaurs were secondary marine reptiles, meaning they returned to the sea from land.",diet:"Piscivore",habitat:"Open Ocean",len:11.0,imgs:["https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800"]},
-  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"The largest shark to ever live. It had a massive impact on the structure of marine communities during its reign.",diet:"Apex Carnivore (Whales)",habitat:"Global Oceans",len:16.0,imgs:["https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"]},
-  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"The largest animal ever known to have lived. Despite its size, it feeds almost exclusively on tiny shrimp-like animals called krill.",diet:"Filter Feeder",habitat:"Global Oceans",len:30.0,imgs:["https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800"]}
+  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth through photosynthesis. These structures are built by cyanobacteria trapping sediment in thin layers.",diet:"Photosynthetic",habitat:"Shallow Marine",len:1.2,behavior:"Stationary colonial growth",imgs:["https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1444464666168-49d633b867ad?auto=format&fit=crop&q=80&w=800"]},
+  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"One of the earliest-known groups of arthropods. They flourished in Palezoic oceans for over 270 million years.",diet:"Detritivore",habitat:"Benthic (Seafloor)",len:0.3,behavior:"Scavenging on the sea floor",imgs:["https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&q=80&w=800"]},
+  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The 'abnormal shrimp' was a giant predator with complex eyes and grasping frontal appendages.",diet:"Carnivore",habitat:"Pelagic",len:1.0,behavior:"Apex predator of the Cambrian",imgs:["https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"]},
+  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"An apex predator armored fish. Instead of teeth, it possessed two pairs of sharp bony plates which formed a beak-like structure.",diet:"Apex Carnivore",habitat:"Coastal/Deep",len:6.0,behavior:"Suction feeding and crushing shells",imgs:["https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800"]},
+  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Famous for its long neck and four large flippers. Plesiosaurs were secondary marine reptiles, meaning they returned to the sea from land.",diet:"Piscivore",habitat:"Open Ocean",len:11.0,behavior:"Ambush predator using long neck",imgs:["https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800"]},
+  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"The largest shark to ever live. It had a massive impact on the structure of marine communities during its reign.",diet:"Apex Carnivore (Whales)",habitat:"Global Oceans",len:16.0,behavior:"Active predator across oceans",imgs:["https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800"]},
+  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"The largest animal ever known to have lived. Despite its size, it feeds almost exclusively on tiny shrimp-like animals called krill.",diet:"Filter Feeder",habitat:"Global Oceans",len:30.0,behavior:"Long-distance migration",imgs:["https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&q=80&w=800"]}
 ];
 
 const QUIZZES={
@@ -256,14 +256,14 @@ const TREE_NODES=[
 ];
 
 const GLOBE_DATA=[
-  "Hadean: Magma ocean cooling, no stable plates.",
-  "Archean: Small volcanic islands emerging.",
-  "Cambrian: Gondwana and small continents near equator.",
-  "Devonian: Closing of Iapetus Ocean, Euramerica forms.",
-  "Jurassic: Pangea supercontinent beginning to rift.",
-  "Miocene: Modern continents near current positions, Tethys closing.",
-  "Modern: 7 continents in familiar positions.",
-  "Future: Coastal flooding, rising sea levels."
+  {era:"Hadean",desc:"Magma ocean cooling, no stable plates.",stats:"Motion: ~50cm/yr | Collision: None"},
+  {era:"Archean",desc:"Small volcanic islands emerging.",stats:"Motion: ~20cm/yr | Collision: Accretionary"},
+  {era:"Cambrian",desc:"Gondwana and small continents near equator.",stats:"Motion: ~10cm/yr | Collision: Divergent/Rifting"},
+  {era:"Devonian",desc:"Closing of Iapetus Ocean, Euramerica forms.",stats:"Motion: ~8cm/yr | Collision: Convergent/Mountain Building"},
+  {era:"Jurassic",desc:"Pangea supercontinent beginning to rift.",stats:"Motion: ~6cm/yr | Collision: Rifting/Spreading"},
+  {era:"Miocene",desc:"Modern continents near current positions, Tethys closing.",stats:"Motion: ~4cm/yr | Collision: Convergent (Himalayas)"},
+  {era:"Modern",desc:"7 continents in familiar positions.",stats:"Motion: ~2-4cm/yr | Collision: Mixed (Global)"},
+  {era:"Future",desc:"Coastal flooding, rising sea levels.",stats:"Motion: ~1cm/yr | Collision: Subduction dominant"}
 ];
 
 // ======================= ENGINE =======================
@@ -296,9 +296,10 @@ class OceanEngine {
     const turb = document.querySelector('#water-distort feTurbulence');
     let frame = 0;
     const loop = () => {
-      frame += 0.001;
-      const bf = (0.015 + Math.sin(frame) * 0.002).toFixed(4);
+      frame += 0.005;
+      const bf = (0.015 + Math.sin(frame * 0.5) * 0.003).toFixed(4);
       turb.setAttribute('baseFrequency', `${bf} ${bf}`);
+      turb.setAttribute('seed', Math.floor(frame * 10) % 100);
       requestAnimationFrame(loop);
     };
     loop();
@@ -307,28 +308,72 @@ class OceanEngine {
     this.camera.position.z=5;
     this.scene.fog=new THREE.FogExp2(0x010b19,0.05);
 
-    // High-Performance Marine Snow Shader
-    const pCount = 5000;
+    // High-Performance Marine Snow Shader (Upgraded)
+    const pCount = 6000;
     const pGeo = new THREE.BufferGeometry();
     const pPosArr = new Float32Array(pCount * 3);
     const pVel = new Float32Array(pCount);
+    const pSize = new Float32Array(pCount);
+    const pRot = new Float32Array(pCount);
+
     for(let i=0; i<pCount; i++) {
       pPosArr[i*3] = (Math.random()-0.5)*150;
       pPosArr[i*3+1] = (Math.random()-0.5)*300;
       pPosArr[i*3+2] = (Math.random()-0.5)*150;
-      pVel[i] = 0.05 + Math.random() * 0.1;
+      pVel[i] = 0.04 + Math.random() * 0.12;
+      pSize[i] = 0.05 + Math.random() * 0.25;
+      pRot[i] = Math.random() * Math.PI * 2;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPosArr, 3));
     pGeo.setAttribute('velocity', new THREE.BufferAttribute(pVel, 1));
+    pGeo.setAttribute('size', new THREE.BufferAttribute(pSize, 1));
+    pGeo.setAttribute('rotation', new THREE.BufferAttribute(pRot, 1));
 
-    this.particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-      color: 0x99ccff,
-      size: 0.1,
+    const pMat = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        color: { value: new THREE.Color(0x99ccff) },
+        opacity: { value: 0.4 }
+      },
+      vertexShader: `
+        attribute float size;
+        attribute float rotation;
+        varying float vRotation;
+        varying float vDistance;
+        void main() {
+          vRotation = rotation;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          vDistance = -mvPosition.z;
+          gl_PointSize = size * (300.0 / vDistance);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        uniform float opacity;
+        uniform float time;
+        varying float vRotation;
+        varying float vDistance;
+        void main() {
+          float r = vRotation + time * 0.5;
+          vec2 uv = gl_PointCoord - 0.5;
+          float cosR = cos(r);
+          float sinR = sin(r);
+          uv = vec2(uv.x * cosR - uv.y * sinR, uv.x * sinR + uv.y * cosR);
+
+          float dist = length(uv);
+          if (dist > 0.5) discard;
+
+          // Depth-based opacity
+          float depthFade = clamp(1.0 - (vDistance / 100.0), 0.2, 1.0);
+          gl_FragColor = vec4(color, opacity * depthFade * (0.5 - dist) * 2.0);
+        }
+      `,
       transparent: true,
-      opacity: 0.4,
       blending: THREE.AdditiveBlending,
-      sizeAttenuation: true
-    }));
+      depthWrite: false
+    });
+    this.particles = new THREE.Points(pGeo, pMat);
     this.scene.add(this.particles);
 
     this.bubbles=new THREE.Group();
@@ -524,35 +569,47 @@ class OceanEngine {
             g.add(gillR);
         }
 
-        // Fins - Shark style
-        const dFin = new THREE.Mesh(new THREE.ConeGeometry(0.4, 1.5, 4), mat);
-        dFin.position.set(0, 0.8, -0.3);
+        // Fins - Shark style (Upgraded)
+        const dFin = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.5, 1.8, 4), mat);
+        dFin.position.set(0, 0.9, -0.3);
         dFin.rotation.x = Math.PI/4;
-        dFin.scale.set(1, 1, 0.2);
+        dFin.scale.set(1, 1, 0.15);
         g.add(dFin);
 
-        const pFinL = new THREE.Mesh(new THREE.ConeGeometry(0.3, 2.0, 4), mat);
-        pFinL.position.set(0.8, -0.2, 0.8);
-        pFinL.rotation.z = -Math.PI/2.2;
-        pFinL.rotation.x = Math.PI/8;
-        pFinL.scale.set(1, 1, 0.15);
+        const pFinL = new THREE.Group();
+        pFinL.position.set(0.7, -0.2, 0.8);
+        const pFinLMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.4, 2.4, 4), mat);
+        pFinLMesh.rotation.z = -Math.PI/2.4;
+        pFinLMesh.rotation.x = Math.PI/6;
+        pFinLMesh.scale.set(1, 1, 0.1);
+        pFinL.add(pFinLMesh);
         g.add(pFinL);
-        const pFinR = pFinL.clone(); pFinR.position.x = -0.8; pFinR.rotation.z = Math.PI/2.2;
-        g.add(pFinR);
+        g.userData.pFinL = pFinL;
 
-        // Tail (Caudal Fin) - Large and powerful
+        const pFinR = new THREE.Group();
+        pFinR.position.set(-0.7, -0.2, 0.8);
+        const pFinRMesh = pFinLMesh.clone();
+        pFinRMesh.rotation.z = Math.PI/2.4;
+        pFinR.add(pFinRMesh);
+        g.add(pFinR);
+        g.userData.pFinR = pFinR;
+
+        // Tail (Caudal Fin) - Large forked shape
         const tailJoint = new THREE.Group();
         tailJoint.position.z = -1.75;
-        const tailFinU = new THREE.Mesh(new THREE.ConeGeometry(0.4, 2.2, 4), mat);
-        tailFinU.position.set(0, 0.9, -0.4);
-        tailFinU.rotation.x = -Math.PI/5;
-        tailFinU.scale.set(1, 1, 0.1);
-        tailJoint.add(tailFinU);
-        const tailFinL = new THREE.Mesh(new THREE.ConeGeometry(0.35, 1.6, 4), mat);
-        tailFinL.position.set(0, -0.6, -0.3);
-        tailFinL.rotation.x = Math.PI/5;
-        tailFinL.scale.set(1, 1, 0.1);
-        tailJoint.add(tailFinL);
+
+        const tailForkU = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.5, 2.6, 4), mat);
+        tailForkU.position.set(0, 1.0, -0.6);
+        tailForkU.rotation.x = -Math.PI/4;
+        tailForkU.scale.set(1, 1, 0.05);
+        tailJoint.add(tailForkU);
+
+        const tailForkL = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.4, 1.8, 4), mat);
+        tailForkL.position.set(0, -0.7, -0.4);
+        tailForkL.rotation.x = Math.PI/4;
+        tailForkL.scale.set(1, 1, 0.05);
+        tailJoint.add(tailForkL);
+
         g.add(tailJoint);
         g.userData.tail = tailJoint;
 
@@ -643,9 +700,13 @@ class OceanEngine {
 
     this.godRays.children.forEach(r=>{
       r.material.uniforms.time.value = time;
-      r.material.uniforms.opacity.value = Math.max(0, 1.0 - depth * 1.5);
+      // Ray drift and depth syncing
+      const drift = Math.sin(time * 0.2 + r.position.x) * 0.05;
+      r.rotation.z += drift * 0.01;
+      r.material.uniforms.opacity.value = Math.max(0, (1.0 - depth * 2.0) * (0.8 + Math.sin(time * r.userData.pulseSpeed) * 0.2));
       r.rotation.y += 0.001;
     });
+    this.particles.material.uniforms.time.value = time;
 
     this.creatures.forEach((c,i)=>{
       c.position.z += Math.cos(time*0.5 + c.userData.offset)*0.05;
@@ -653,10 +714,22 @@ class OceanEngine {
       c.rotation.y = Math.sin(time + i)*0.1;
 
       if(c.userData.isMeg) {
-          if(c.userData.tail) c.userData.tail.rotation.y = Math.sin(time*3)*0.4;
-          if(c.userData.jaw) c.userData.jaw.rotation.x = 0.2 + Math.sin(time*0.5)*0.1;
+          // Sinusoidal swim animation
+          const swimCycle = time * 2.5;
+          if(c.userData.tail) c.userData.tail.rotation.y = Math.sin(swimCycle) * 0.45;
+          if(c.userData.pFinL) c.userData.pFinL.rotation.z = Math.sin(swimCycle * 0.5) * 0.15;
+          if(c.userData.pFinR) c.userData.pFinR.rotation.z = -Math.sin(swimCycle * 0.5) * 0.15;
+
+          // Biting action
+          if(c.userData.jaw) {
+              const bite = Math.pow(Math.sin(time * 0.8), 10);
+              c.userData.jaw.rotation.x = 0.2 + bite * 0.6;
+          }
+
           // Slowly track camera
           c.lookAt(0, this.camera.position.y - 10, 0);
+          // Add subtle body undulation
+          c.rotation.z = Math.sin(time) * 0.05;
       } else {
           if(c.userData.tail) c.userData.tail.rotation.y = Math.sin(time*5 + i)*0.5;
           // Microbes vibrate
@@ -677,7 +750,8 @@ class OceanEngine {
 }
 
 // ======================= APP =======================
-let engine, activeZone=1, scores=JSON.parse(localStorage.getItem('og_scores')||'{}');
+let engine, activeZone=1, scores=JSON.parse(localStorage.getItem('og_scores_v2')||'{}');
+let quizStartTime = 0;
 
 function enterApp() {
   document.getElementById('splash').classList.add('hidden');
@@ -725,7 +799,14 @@ function updateHUD(prog) {
     // Sync Globe if open
     if(document.getElementById('globe-modal').classList.contains('open')) {
         updateGlobeTexture(zi);
-        document.getElementById('globe-desc').textContent=GLOBE_DATA[zi-1];
+        const gd = GLOBE_DATA[zi-1];
+        document.getElementById('globe-desc').innerHTML=`
+          <div style="padding:1rem;background:rgba(0,240,255,0.05);border-radius:0.75rem;border-left:3px solid var(--bio-cyan)">
+              <strong>${gd.era} Analysis</strong>
+              <p style="margin-top:0.4rem">${gd.desc}</p>
+              <div style="margin-top:0.8rem;font-size:0.75rem;font-family:Outfit;color:var(--bio-cyan)">${gd.stats}</div>
+          </div>
+        `;
     }
   }
   document.getElementById('progress-bar').style.width=`${prog*100}%`;
@@ -740,17 +821,37 @@ function renderEnc() {
     const div=document.createElement('div'); div.className='enc-item'; div.innerHTML=`<strong>${s.name}</strong><br><small>${s.era}</small>`;
     div.onclick=()=>{
       document.querySelectorAll('.enc-item').forEach(i=>i.classList.remove('active')); div.classList.add('active');
-      const imgHtml = s.imgs.map(img => `<img src="${img}" style="width:100%;height:200px;object-fit:cover;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">`).join('');
+      const imgHtml = s.imgs.map(img => `<img src="${img}" style="flex:0 0 250px;height:180px;object-fit:cover;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">`).join('');
+
+      const humanHeight = 1.8;
+      const ratio = Math.min(1, humanHeight / s.len);
+      const sSize = 100;
+      const hSize = sSize * ratio;
+
       document.getElementById('enc-main').innerHTML=`
-        <div style="display:flex;gap:0.5rem;overflow-x:auto;margin-bottom:1.5rem;padding-bottom:0.5rem;">${imgHtml}</div>
+        <div style="display:flex;gap:1rem;overflow-x:auto;margin-bottom:1.5rem;padding-bottom:0.5rem;scrollbar-width:thin;">${imgHtml}</div>
         <h2 style="color:var(--bio-cyan)">${s.name}</h2>
         <p style="font-family:'Outfit';font-size:0.8rem;color:var(--slate-500);text-transform:uppercase;margin-bottom:1rem;">${s.sci}</p>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:1rem;margin-bottom:1.5rem;">
             <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Diet</span><strong>${s.diet}</strong></div>
             <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Habitat</span><strong>${s.habitat}</strong></div>
             <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Length</span><strong>${s.len}m</strong></div>
-            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Era</span><strong>${s.era}</strong></div>
+            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Behavior</span><strong>${s.behavior}</strong></div>
+        </div>
+
+        <div style="margin-bottom:1.5rem">
+            <span class="g-lbl">Size Comparison</span>
+            <div style="display:flex;align-items:flex-end;gap:2rem;height:120px;padding:1rem;background:rgba(0,0,0,0.3);border-radius:1rem;">
+                <div style="text-align:center">
+                    <div style="width:${sSize}px;height:${sSize}px;background:var(--bio-cyan);border-radius:50%;opacity:0.3;border:2px solid var(--bio-cyan);"></div>
+                    <span style="font-size:0.6rem;display:block;margin-top:0.4rem">${s.name} (${s.len}m)</span>
+                </div>
+                <div style="text-align:center">
+                    <div style="width:20px;height:${hSize}px;background:#fff;opacity:0.6;margin:0 auto;"></div>
+                    <span style="font-size:0.6rem;display:block;margin-top:0.4rem">Human (1.8m)</span>
+                </div>
+            </div>
         </div>
 
         <p style="line-height:1.6;color:var(--slate-300)">${s.desc}</p>
@@ -783,12 +884,13 @@ function renderTree() {
   });
 
   TREE_NODES.forEach(n=>{
-    svg+=`<g class="tree-node" style="cursor:pointer" onclick="showTreeNode('${n.id}')">
+    svg+=`<g class="tree-node" style="cursor:pointer" onclick="showTreeNode('${n.id}')" onmouseover="this.querySelector('circle').setAttribute('r', '16')" onmouseout="this.querySelector('circle').setAttribute('r', '12')">
       <circle cx="${n.x}" cy="${n.y}" r="12" fill="var(--slate-950)" stroke="var(--bio-cyan)" stroke-width="2" style="transition: all 0.3s;">
         <animate attributeName="stroke-opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
       </circle>
       <circle cx="${n.x}" cy="${n.y}" r="4" fill="var(--bio-cyan)" />
       <text x="${n.x}" y="${n.y+25}" fill="#fff" font-size="10" font-weight="700" text-anchor="middle" style="pointer-events:none; text-transform:uppercase; letter-spacing:0.05em; filter: drop-shadow(0 0 2px #000);">${n.lbl}</text>
+      <title>${n.lbl}: ${n.desc}</title>
     </g>`;
   });
   svg+=`</svg>`; mount.innerHTML=svg;
@@ -796,6 +898,24 @@ function renderTree() {
 function showTreeNode(id) {
   const n = TREE_NODES.find(x=>x.id===id);
   document.getElementById('tree-detail').innerHTML = `<h3>${n.lbl}</h3><p style="margin-top:1rem;color:var(--slate-300);line-height:1.6">${n.desc}</p>`;
+
+  // Highlight path
+  const paths = document.querySelectorAll('#tree-mount path');
+  paths.forEach(p => { p.setAttribute('stroke-opacity', '0.2'); p.setAttribute('stroke-width', '2'); });
+
+  let curr = n;
+  while(curr && curr.pid) {
+      const p = TREE_NODES.find(x=>x.id===curr.pid);
+      const path = Array.from(paths).find(path => {
+          const d = path.getAttribute('d');
+          return d.includes(`M ${p.x} ${p.y}`) && (d.includes(`${curr.x} ${curr.y}`) || d.includes(`C ${p.x+50} ${p.y}`));
+      });
+      if(path) {
+          path.setAttribute('stroke-opacity', '1.0');
+          path.setAttribute('stroke-width', '4');
+      }
+      curr = p;
+  }
 }
 
 let globeScene, globeCamera, globeRenderer, globeMesh, globeCtx, globeTex;
@@ -813,7 +933,15 @@ function initGlobe() {
 
   globeMesh=new THREE.Mesh(new THREE.SphereGeometry(1,32,32),new THREE.MeshStandardMaterial({map:globeTex, emissive:0x00f0ff, emissiveIntensity:0.1}));
   globeScene.add(globeMesh); globeScene.add(new THREE.AmbientLight(0xffffff,0.8)); globeCamera.position.z=3;
-  document.getElementById('globe-desc').textContent=GLOBE_DATA[activeZone-1];
+
+  const gd = GLOBE_DATA[activeZone-1];
+  document.getElementById('globe-desc').innerHTML=`
+    <div style="padding:1rem;background:rgba(0,240,255,0.05);border-radius:0.75rem;border-left:3px solid var(--bio-cyan)">
+        <strong>${gd.era} Analysis</strong>
+        <p style="margin-top:0.4rem">${gd.desc}</p>
+        <div style="margin-top:0.8rem;font-size:0.75rem;font-family:Outfit;color:var(--bio-cyan)">${gd.stats}</div>
+    </div>
+  `;
 
   let isDragging=false, px, py;
   mount.onmousedown=(e)=>{ isDragging=true; px=e.clientX; py=e.clientY; };
@@ -885,10 +1013,15 @@ function switchTab(t) {
     document.querySelectorAll('.dash-tab').forEach(b => b.classList.toggle('on', b.id === `tab-${t}`));
     const content = document.getElementById('dash-content');
     if(t === 'quiz') {
+        quizStartTime = Date.now();
         const qz = QUIZZES[activeZone] || QUIZZES[1];
+        const state = scores[activeZone] || { attempts: 0 };
         content.innerHTML = `
             <div class="glass" style="padding:1.5rem;border-radius:1rem;border-left:4px solid var(--bio-cyan)">
-                <span class="g-lbl" style="margin-bottom:0.5rem">Mission: ${ZONES[activeZone-1].name}</span>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                    <span class="g-lbl" style="margin:0">Mission: ${ZONES[activeZone-1].name}</span>
+                    <span class="g-lbl" style="margin:0">Attempts: ${state.attempts || 0}</span>
+                </div>
                 <h3 style="font-size:1.4rem;line-height:1.3;margin-bottom:1.5rem;">${qz.q}</h3>
                 <div style="display:grid;gap:0.75rem">
                     ${qz.opts.map((o, i) => `<button class="quiz-opt" onclick="checkQuiz(${i})">${o}</button>`).join('')}
@@ -896,37 +1029,56 @@ function switchTab(t) {
                 <div id="quiz-fb" style="margin-top:1.5rem"></div>
             </div>`;
     } else {
-        const earned = Object.keys(scores).filter(k => scores[k]).length;
+        const earned = Object.keys(scores).filter(k => scores[k]?.passed).length;
         content.innerHTML = `
             <div style="text-align:center;margin-bottom:2rem;">
                 <div style="font-size:3rem;font-weight:900;color:var(--bio-cyan)">${earned}/8</div>
                 <div class="g-lbl">Oceanic Milestones Achieved</div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:1rem;">
-                ${ZONES.map(z => `
-                    <div class="glass" style="padding:1.25rem;text-align:center;border-color:${scores[z.index]?'var(--bio-cyan)':'rgba(255,255,255,0.05)'};opacity:${scores[z.index]?1:0.5}">
-                        <div style="font-size:2.5rem;margin-bottom:0.5rem;filter:${scores[z.index]?'drop-shadow(0 0 10px var(--bio-cyan))':'grayscale(1)'}">${scores[z.index]?'💠':'🌑'}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:1rem;">
+                ${ZONES.map(z => {
+                    const s = scores[z.index] || {};
+                    return `
+                    <div class="glass" style="padding:1.25rem;text-align:center;border-color:${s.passed?'var(--bio-cyan)':'rgba(255,255,255,0.05)'};opacity:${s.passed?1:0.5}">
+                        <div style="font-size:2rem;margin-bottom:0.5rem;">${s.passed?'💠':'🌑'}</div>
                         <div style="font-family:'Outfit';font-size:0.65rem;font-weight:800;color:#fff">${z.era}</div>
-                        <div style="font-size:0.5rem;color:var(--slate-500);margin-top:0.25rem">${scores[z.index]?'Unlocked':'Locked'}</div>
+                        ${s.badges ? `<div style="display:flex;justify-content:center;gap:0.2rem;margin-top:0.4rem">
+                            ${s.badges.map(b => `<span title="${b}" style="cursor:help">⭐</span>`).join('')}
+                        </div>` : ''}
+                        <div style="font-size:0.5rem;color:var(--slate-500);margin-top:0.25rem">${s.passed? (s.bestTime ? s.bestTime+'s' : 'Unlocked') : 'Locked'}</div>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>`;
     }
 }
 function checkQuiz(i) {
   const qz = QUIZZES[activeZone] || QUIZZES[1]; const fb = document.getElementById('quiz-fb');
   const opts = document.querySelectorAll('.quiz-opt');
+  const timeTaken = Math.floor((Date.now() - quizStartTime) / 1000);
+
+  if(!scores[activeZone]) scores[activeZone] = { attempts: 0, passed: false, badges: [], bestTime: 999 };
+  scores[activeZone].attempts++;
 
   if(i === qz.ans){
     opts[i].classList.add('cor');
+    const isFirstPass = !scores[activeZone].passed;
+    scores[activeZone].passed = true;
+
+    let newBadges = [];
+    if(timeTaken < 10 && !scores[activeZone].badges.includes("Speed Demon")) newBadges.push("Speed Demon");
+    if(scores[activeZone].attempts === 1 && !scores[activeZone].badges.includes("Perfect Insight")) newBadges.push("Perfect Insight");
+
+    scores[activeZone].badges = [...new Set([...scores[activeZone].badges, ...newBadges])];
+    scores[activeZone].bestTime = Math.min(scores[activeZone].bestTime, timeTaken);
+    localStorage.setItem('og_scores_v2', JSON.stringify(scores));
+
     fb.innerHTML = `<div class="anim-fadeup" style="color:var(--sea-green);padding:1rem;border:1px solid;border-radius:0.5rem;background:rgba(13,242,163,0.05)">
-      <strong style="display:block;margin-bottom:0.5rem">✨ RESEARCH DATA SECURED</strong>
+      <strong style="display:block;margin-bottom:0.5rem">✨ RESEARCH DATA SECURED (${timeTaken}s)</strong>
+      ${newBadges.length ? `<div style="color:var(--bio-cyan);font-size:0.7rem;margin-bottom:0.5rem">New Badges: ${newBadges.join(', ')}</div>` : ''}
       ${qz.exp}
     </div>`;
-    if(!scores[activeZone]) {
-      scores[activeZone] = true;
-      localStorage.setItem('og_scores', JSON.stringify(scores));
-      // Reward Animation
+
+    if(isFirstPass || newBadges.length) {
       const flash = document.createElement('div');
       flash.style.cssText = 'position:fixed;inset:0;z-index:1000;background:#fff;pointer-events:none;opacity:0.3;transition:opacity 0.5s;';
       document.body.appendChild(flash);
