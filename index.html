@@ -224,13 +224,13 @@ const ZONES=[
 ];
 
 const SPECIES=[
-  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth.",color:"#0df2a3",len:1.2},
-  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"Extremely successful armored arthropods.",color:"#00f0ff",len:0.3},
-  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The first apex predator of the oceans.",color:"#ff6b4a",len:1.0},
-  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"Armored fish with bone-shearing jaws.",color:"#0df2a3",len:6.0},
-  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Long-necked air-breathing marine reptile.",color:"#00f0ff",len:11.0},
-  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"Colossal prehistoric shark.",color:"#ff6b4a",len:16.0},
-  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"Largest animal known to have existed.",color:"#00f0ff",len:30.0}
+  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth.",color:"#0df2a3",len:1.2,img:"https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?auto=format&fit=crop&q=80&w=800"},
+  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"Extremely successful armored arthropods.",color:"#00f0ff",len:0.3,img:"https://images.unsplash.com/photo-1599423300746-b62533397364?auto=format&fit=crop&q=80&w=800"},
+  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The first apex predator of the oceans.",color:"#ff6b4a",len:1.0,img:"https://images.unsplash.com/photo-1634653555529-67995f725350?auto=format&fit=crop&q=80&w=800"},
+  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"Armored fish with bone-shearing jaws.",color:"#0df2a3",len:6.0,img:"https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&q=80&w=800"},
+  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Long-necked air-breathing marine reptile.",color:"#00f0ff",len:11.0,img:"https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800"},
+  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"Colossal prehistoric shark.",color:"#ff6b4a",len:16.0,img:"https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800"},
+  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"Largest animal known to have existed.",color:"#00f0ff",len:30.0,img:"https://images.unsplash.com/photo-1454991727061-be514eae86f7?auto=format&fit=crop&q=80&w=800"}
 ];
 
 const QUIZZES={
@@ -668,7 +668,13 @@ function renderEnc() {
     const div=document.createElement('div'); div.className='enc-item'; div.innerHTML=`<strong>${s.name}</strong><br><small>${s.era}</small>`;
     div.onclick=()=>{
       document.querySelectorAll('.enc-item').forEach(i=>i.classList.remove('active')); div.classList.add('active');
-      document.getElementById('enc-main').innerHTML=`<h2 style="color:${s.color}">${s.name}</h2><p><em>${s.sci}</em></p><p style="margin-top:1rem">${s.desc}</p><p style="margin-top:1rem;color:var(--slate-500)">Length: ${s.len}m</p>`;
+      document.getElementById('enc-main').innerHTML=`
+        <img src="${s.img}" style="width:100%;height:250px;object-fit:cover;border-radius:1rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">
+        <h2 style="color:${s.color}">${s.name}</h2>
+        <p><em>${s.sci}</em></p>
+        <p style="margin-top:1rem">${s.desc}</p>
+        <p style="margin-top:1rem;color:var(--slate-500)">Length: ${s.len}m</p>
+      `;
     };
     list.appendChild(div);
   });
