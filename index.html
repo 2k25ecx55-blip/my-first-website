@@ -170,7 +170,7 @@
     <div class="splash-panel glass cinematic-distort">
       <button id="enter-btn" onclick="enterApp()">Initiate Descent</button>
     </div>
-    <p class="splash-credit">Powered by Three.js · Educational Data Engine</p>
+    <p class="splash-credit">Powered by Three.js / Educational Data Engine</p>
   </div>
 </div>
 
@@ -179,7 +179,7 @@
   <div id="hud">
     <div id="hud-top">
       <div class="hud-logo"><div class="hud-dot"></div><span class="hud-logo-text">OCEAN GENESIS</span></div>
-      <div class="hud-controls"><button class="mod-btn" onclick="openModal('sc-modal')">⌨️</button></div>
+      <div class="hud-controls"><button class="mod-btn" onclick="openModal('sc-modal')">Shortcuts</button></div>
     </div>
     <div id="hud-middle">
       <div id="depth-gauge" class="cinematic-distort">
@@ -189,10 +189,10 @@
       </div>
       <div id="module-panel" class="cinematic-distort">
         <span class="g-lbl">Modules</span>
-        <button class="mod-btn" onclick="openModal('globe-modal')">🌍 Tectonics</button>
-        <button class="mod-btn" onclick="openModal('tree-modal')">🧬 Evolution</button>
-        <button class="mod-btn" onclick="openModal('enc-modal')">📖 Archive</button>
-        <button class="mod-btn" onclick="openModal('dash-modal')">🏆 Research</button>
+        <button class="mod-btn" onclick="openModal('globe-modal')">Tectonics</button>
+        <button class="mod-btn" onclick="openModal('tree-modal')">Evolution</button>
+        <button class="mod-btn" onclick="openModal('enc-modal')">Archive</button>
+        <button class="mod-btn" onclick="openModal('dash-modal')">Research</button>
       </div>
     </div>
     <div id="hud-bottom">
@@ -204,11 +204,11 @@
 </div>
 
 <!-- MODALS -->
-<div class="modal" id="globe-modal"><div class="mbox"><button class="mclose" onclick="closeModal('globe-modal')">✕</button><h2>🌍 Plate Tectonics</h2><div id="globe-mount" style="height:400px;margin-top:1rem;background:#000;border-radius:1rem;"></div><p id="globe-desc" style="margin-top:1rem;color:var(--slate-400);font-size:0.9rem;"></p></div></div>
-<div class="modal" id="tree-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('tree-modal')">✕</button><h2>🧬 Evolution Tree</h2><div style="display:grid;grid-template-columns:1fr 250px;gap:2rem;margin-top:1.5rem;"><div id="tree-mount" style="height:500px;overflow:auto;background:rgba(0,0,0,0.2);border-radius:1rem;"></div><div id="tree-detail" style="padding:1rem;background:rgba(255,255,255,0.05);border-radius:1rem;">Select a node to view evolutionary details.</div></div></div></div>
-<div class="modal" id="enc-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('enc-modal')">✕</button><h2>📖 Species Archive</h2><div class="enc-grid" style="margin-top:1.5rem;"><div class="enc-list" id="enc-list"></div><div class="enc-main" id="enc-main"></div></div></div></div>
-<div class="modal" id="dash-modal"><div class="mbox"><button class="mclose" onclick="closeModal('dash-modal')">✕</button><h2>🏆 Research Dashboard</h2><div class="dash-tabs"><button class="dash-tab on" id="tab-quiz" onclick="switchTab('quiz')">Zone Quiz</button><button class="dash-tab" id="tab-badges" onclick="switchTab('badges')">Badges</button></div><div id="dash-content" style="margin-top:1.5rem;"></div></div></div>
-<div class="modal" id="sc-modal"><div class="mbox"><button class="mclose" onclick="closeModal('sc-modal')">✕</button><h2>⌨️ Shortcuts</h2><p style="margin-top:1rem">G: Tectonics | T: Evolution | E: Archive | Q: Research | Esc: Close</p></div></div>
+<div class="modal" id="globe-modal"><div class="mbox"><button class="mclose" onclick="closeModal('globe-modal')">Close</button><h2>Plate Tectonics</h2><div id="globe-mount" style="height:400px;margin-top:1rem;background:#000;border-radius:1rem;"></div><p id="globe-desc" style="margin-top:1rem;color:var(--slate-400);font-size:0.9rem;"></p></div></div>
+<div class="modal" id="tree-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('tree-modal')">Close</button><h2>Evolution Tree</h2><div style="display:grid;grid-template-columns:1fr 250px;gap:2rem;margin-top:1.5rem;"><div id="tree-mount" style="height:500px;overflow:auto;background:rgba(0,0,0,0.2);border-radius:1rem;"></div><div id="tree-detail" style="padding:1rem;background:rgba(255,255,255,0.05);border-radius:1rem;">Select a node to view evolutionary details.</div></div></div></div>
+<div class="modal" id="enc-modal"><div class="mbox" style="max-width:900px"><button class="mclose" onclick="closeModal('enc-modal')">Close</button><h2>Species Archive</h2><div class="enc-grid" style="margin-top:1.5rem;"><div class="enc-list" id="enc-list"></div><div class="enc-main" id="enc-main"></div></div></div></div>
+<div class="modal" id="dash-modal"><div class="mbox"><button class="mclose" onclick="closeModal('dash-modal')">Close</button><h2>Research Dashboard</h2><div class="dash-tabs"><button class="dash-tab on" id="tab-quiz" onclick="switchTab('quiz')">Zone Quiz</button><button class="dash-tab" id="tab-badges" onclick="switchTab('badges')">Badges</button></div><div id="dash-content" style="margin-top:1.5rem;"></div></div></div>
+<div class="modal" id="sc-modal"><div class="mbox"><button class="mclose" onclick="closeModal('sc-modal')">Close</button><h2>Shortcuts</h2><p style="margin-top:1rem">G: Tectonics | T: Evolution | E: Archive | Q: Research | Esc: Close</p></div></div>
 
 <script>
 // ======================= DATA =======================
@@ -241,7 +241,8 @@ const QUIZZES={
   4:{q:"Dunkleosteus was famous for having what instead of teeth?",opts:["Baleen","Self-sharpening bony plates","Tentacles","Suction cups"],ans:1,exp:"It had armored bony shearing plates."},
   5:{q:"How did Plesiosaurs swim?",opts:["Tail flukes","Underwater flight with 4 paddles","Jet propulsion","Walking on the bottom"],ans:1,exp:"They rowed their four massive flippers."},
   6:{q:"What was the primary diet of Megalodon?",opts:["Plankton","Prehistoric whales","Giant squid","Coral"],ans:1,exp:"They hunted large cetaceans."},
-  7:{q:"Whales are descended from what?",opts:["Ancient sharks","Land mammals","Marine reptiles","Fish"],ans:1,exp:"Whales evolved from land-dwelling mammals."}
+  7:{q:"Whales are descended from what?",opts:["Ancient sharks","Land mammals","Marine reptiles","Fish"],ans:1,exp:"Whales evolved from land-dwelling mammals."},
+  8:{q:"What is a key focus of future 'Anthropocene' ocean management?",opts:["Increasing plastic production","Restorative biotechnology","Draining the abyssal plains","Ignoring thermal vents"],ans:1,exp:"Advanced monitoring and bio-restoration are vital for future marine stability."}
 };
 
 const TREE_NODES=[
@@ -1039,10 +1040,10 @@ function switchTab(t) {
                     const s = scores[z.index] || {};
                     return `
                     <div class="glass" style="padding:1.25rem;text-align:center;border-color:${s.passed?'var(--bio-cyan)':'rgba(255,255,255,0.05)'};opacity:${s.passed?1:0.5}">
-                        <div style="font-size:2rem;margin-bottom:0.5rem;">${s.passed?'💠':'🌑'}</div>
+                        <div style="font-size:0.7rem;font-family:Outfit;margin-bottom:0.5rem;color:var(--bio-cyan)">${s.passed?'SECURED':'LOCKED'}</div>
                         <div style="font-family:'Outfit';font-size:0.65rem;font-weight:800;color:#fff">${z.era}</div>
                         ${s.badges ? `<div style="display:flex;justify-content:center;gap:0.2rem;margin-top:0.4rem">
-                            ${s.badges.map(b => `<span title="${b}" style="cursor:help">⭐</span>`).join('')}
+                            ${s.badges.map(b => `<span title="${b}" style="cursor:help;font-size:0.5rem;color:var(--sea-green)">AWARD</span>`).join('')}
                         </div>` : ''}
                         <div style="font-size:0.5rem;color:var(--slate-500);margin-top:0.25rem">${s.passed? (s.bestTime ? s.bestTime+'s' : 'Unlocked') : 'Locked'}</div>
                     </div>
@@ -1072,7 +1073,7 @@ function checkQuiz(i) {
     localStorage.setItem('og_scores_v2', JSON.stringify(scores));
 
     fb.innerHTML = `<div class="anim-fadeup" style="color:var(--sea-green);padding:1rem;border:1px solid;border-radius:0.5rem;background:rgba(13,242,163,0.05)">
-      <strong style="display:block;margin-bottom:0.5rem">✨ RESEARCH DATA SECURED (${timeTaken}s)</strong>
+      <strong style="display:block;margin-bottom:0.5rem">RESEARCH DATA SECURED (${timeTaken}s)</strong>
       ${newBadges.length ? `<div style="color:var(--bio-cyan);font-size:0.7rem;margin-bottom:0.5rem">New Badges: ${newBadges.join(', ')}</div>` : ''}
       ${qz.exp}
     </div>`;
@@ -1086,7 +1087,7 @@ function checkQuiz(i) {
     }
   } else {
     opts[i].classList.add('wrg');
-    fb.innerHTML = `<div class="anim-fadeup" style="color:var(--coral-orange);padding:1rem;border:1px solid;border-radius:0.5rem;background:rgba(255,107,74,0.05)">❌ Data Analysis Failed. Recalibrate and try again.</div>`;
+    fb.innerHTML = `<div class="anim-fadeup" style="color:var(--coral-orange);padding:1rem;border:1px solid;border-radius:0.5rem;background:rgba(255,107,74,0.05)">Data Analysis Failed. Recalibrate and try again.</div>`;
     setTimeout(()=>opts[i].classList.remove('wrg'), 1000);
   }
 }
