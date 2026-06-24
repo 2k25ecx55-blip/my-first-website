@@ -224,13 +224,13 @@ const ZONES=[
 ];
 
 const SPECIES=[
-  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth.",color:"#0df2a3",len:1.2,img:"https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&q=80&w=800"},
-  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"Extremely successful armored arthropods.",color:"#00f0ff",len:0.3,img:"https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800"},
-  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The first apex predator of the oceans.",color:"#ff6b4a",len:1.0,img:"https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800"},
-  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"Armored fish with bone-shearing jaws.",color:"#0df2a3",len:6.0,img:"https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"},
-  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Long-necked air-breathing marine reptile.",color:"#00f0ff",len:11.0,img:"https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800"},
-  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"Colossal prehistoric shark.",color:"#ff6b4a",len:16.0,img:"https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800"},
-  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"Largest animal known to have existed.",color:"#00f0ff",len:30.0,img:"https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800"}
+  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth through photosynthesis. These structures are built by cyanobacteria trapping sediment in thin layers.",diet:"Photosynthetic",habitat:"Shallow Marine",len:1.2,imgs:["https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800"]},
+  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"One of the earliest-known groups of arthropods. They flourished in Palezoic oceans for over 270 million years.",diet:"Detritivore",habitat:"Benthic (Seafloor)",len:0.3,imgs:["https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800"]},
+  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The 'abnormal shrimp' was a giant predator with complex eyes and grasping frontal appendages.",diet:"Carnivore",habitat:"Pelagic",len:1.0,imgs:["https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=800"]},
+  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"An apex predator armored fish. Instead of teeth, it possessed two pairs of sharp bony plates which formed a beak-like structure.",diet:"Apex Carnivore",habitat:"Coastal/Deep",len:6.0,imgs:["https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"]},
+  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Famous for its long neck and four large flippers. Plesiosaurs were secondary marine reptiles, meaning they returned to the sea from land.",diet:"Piscivore",habitat:"Open Ocean",len:11.0,imgs:["https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&q=80&w=800"]},
+  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"The largest shark to ever live. It had a massive impact on the structure of marine communities during its reign.",diet:"Apex Carnivore (Whales)",habitat:"Global Oceans",len:16.0,imgs:["https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800","https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800"]},
+  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"The largest animal ever known to have lived. Despite its size, it feeds almost exclusively on tiny shrimp-like animals called krill.",diet:"Filter Feeder",habitat:"Global Oceans",len:30.0,imgs:["https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800"]}
 ];
 
 const QUIZZES={
@@ -342,16 +342,18 @@ class OceanEngine {
     }
     this.scene.add(this.bubbles);
 
-    // Enhanced Cinematic God Rays
+    // Enhanced Cinematic God Rays with Layered Noise
     this.godRays=new THREE.Group();
     const grMat = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         color: { value: new THREE.Color(0x00f0ff) },
-        opacity: { value: 1.0 }
+        opacity: { value: 1.0 },
+        scanline: { value: 0.0 }
       },
       vertexShader: `
         varying vec2 vUv;
+        varying float vNoise;
         void main() {
           vUv = uv;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -362,11 +364,24 @@ class OceanEngine {
         uniform float time;
         uniform vec3 color;
         uniform float opacity;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+        }
+
         void main() {
           float dist = distance(vUv.x, 0.5);
-          float alpha = smoothstep(0.5, 0.0, dist) * vUv.y * opacity;
-          alpha *= 0.5 + 0.5 * sin(time * 2.0 + vUv.y * 5.0);
-          gl_FragColor = vec4(color, alpha * 0.2);
+          float baseAlpha = smoothstep(0.5, 0.0, dist) * vUv.y;
+
+          // Shimmer layers
+          float shimmer = 0.5 + 0.5 * sin(time * 1.5 + vUv.y * 10.0);
+          shimmer *= 0.8 + 0.2 * sin(time * 4.0 + vUv.x * 20.0);
+
+          // Add some grain/noise
+          float noise = hash(vUv + time * 0.01);
+
+          float finalAlpha = baseAlpha * shimmer * opacity;
+          gl_FragColor = vec4(color, finalAlpha * (0.15 + noise * 0.05));
         }
       `,
       transparent: true,
@@ -375,21 +390,23 @@ class OceanEngine {
       depthWrite: false
     });
 
-    for(let i=0;i<15;i++){
-      const h = 60 + Math.random()*30;
-      const r1 = 2 + Math.random()*5;
-      const grGeo=new THREE.CylinderGeometry(0, r1, h, 32, 1, true);
+    for(let i=0;i<25;i++){
+      const h = 80 + Math.random()*40;
+      const r1 = 1 + Math.random()*4;
+      const grGeo=new THREE.CylinderGeometry(0, r1, h, 24, 1, true);
       const r=new THREE.Mesh(grGeo,grMat.clone());
-      r.position.set((Math.random()-0.5)*80, 30, (Math.random()-0.5)*30);
-      r.rotation.x = Math.PI + (Math.random()-0.5)*0.5;
-      r.rotation.z = (Math.random()-0.5)*0.3;
-      r.userData.pulseOffset = Math.random()*Math.PI;
+      r.position.set((Math.random()-0.5)*120, 40, (Math.random()-0.5)*60);
+      r.rotation.x = Math.PI + (Math.random()-0.5)*0.6;
+      r.rotation.z = (Math.random()-0.5)*0.4;
+      r.userData.pulseSpeed = 0.5 + Math.random();
       this.godRays.add(r);
     }
     this.scene.add(this.godRays);
 
-    this.scene.add(new THREE.AmbientLight(0xffffff,0.3));
-    const pl=new THREE.PointLight(0x00f0ff,2,150); pl.position.set(0,20,10); this.scene.add(pl);
+    this.scene.add(new THREE.AmbientLight(0xffffff,0.25));
+    this.mainLight = new THREE.PointLight(0x00f0ff, 2.5, 200);
+    this.mainLight.position.set(0, 30, 10);
+    this.scene.add(this.mainLight);
 
     this.spawnCreatures();
   }
@@ -424,12 +441,22 @@ class OceanEngine {
   spawnCreatures() {
     const mat=new THREE.MeshPhysicalMaterial({color:0x0a2239,emissive:0x00f0ff,emissiveIntensity:0.2,transparent:true,opacity:0.8,roughness:0.2});
 
-    // Generic Fish / Era creatures distributed through the water column
-    for(let i=0;i<20;i++){
-      const g=this.createCreature(mat, 0.5 + Math.random());
-      g.position.set((Math.random()-0.5)*60, -Math.random()*120, (Math.random()-0.5)*40);
-      this.scene.add(g); this.creatures.push(g);
-    }
+    // Distribute more creatures based on era depths
+    ZONES.forEach((zone, index) => {
+        const baseDepth = index * 15;
+        const count = 5 + Math.floor(Math.random() * 5);
+        for(let i=0; i<count; i++) {
+            const scale = 0.3 + Math.random() * 0.8;
+            const type = index < 2 ? 'micro' : (index < 4 ? 'ancient' : 'fish');
+            const g = this.createCreature(mat, scale, false, type);
+            g.position.set(
+                (Math.random()-0.5)*70,
+                -(baseDepth + Math.random()*15),
+                (Math.random()-0.5)*50
+            );
+            this.scene.add(g); this.creatures.push(g);
+        }
+    });
 
     // Detailed Megalodon (Spawns in Miocene depth: ~75 to ~90 range)
     const megMat=new THREE.MeshPhysicalMaterial({color:0x223344,emissive:0x00f0ff,emissiveIntensity:0.1,roughness:0.4});
@@ -437,99 +464,134 @@ class OceanEngine {
     meg.position.set(15, -82, -15);
     this.scene.add(meg); this.creatures.push(meg);
   }
-  createCreature(mat, scale, isMeg=false) {
+  createCreature(mat, scale, isMeg=false, type='fish') {
     const g=new THREE.Group(); g.scale.set(scale,scale,scale);
 
     if(isMeg) {
-        // Advanced Procedural Megalodon
-        const bodyGeo = new THREE.SphereGeometry(1, 32, 32);
+        // Advanced Procedural Megalodon with better geometry
+        // r128 compatibility: Cylinder + Spheres
+        const bodyGeo = new THREE.CylinderGeometry(0.8, 0.8, 3.5, 16);
         const body = new THREE.Mesh(bodyGeo, mat);
-        body.scale.set(1, 0.8, 3.5);
+        body.rotation.x = Math.PI / 2;
         g.add(body);
 
-        // Head/Snout
-        const snoutGeo = new THREE.ConeGeometry(0.8, 1.8, 32);
+        // Head/Snout - smoothed
+        const snoutGeo = new THREE.SphereGeometry(0.8, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
         const snout = new THREE.Mesh(snoutGeo, mat);
         snout.rotation.x = Math.PI / 2;
-        snout.position.z = 2.2;
+        snout.position.z = 1.75;
+        snout.scale.set(1, 1.5, 0.8);
         g.add(snout);
 
-        // Jaw with Teeth
+        // Jaw with multiple rows of teeth
         const jaw = new THREE.Group();
-        jaw.position.set(0, -0.4, 1.5);
-        const jawMesh = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 1.2), mat);
+        jaw.position.set(0, -0.3, 1.2);
+        const jawMesh = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.1, 8, 16, Math.PI), mat);
+        jawMesh.rotation.x = Math.PI / 2;
         jaw.add(jawMesh);
 
-        const toothMat = new THREE.MeshBasicMaterial({color: 0xffffff});
-        const toothGeo = new THREE.ConeGeometry(0.05, 0.15, 4);
-        for(let i=0; i<8; i++) {
-            const tooth = new THREE.Mesh(toothGeo, toothMat);
-            tooth.position.set(-0.35 + i*0.1, 0.1, 0.4);
-            tooth.rotation.x = Math.PI;
-            jaw.add(tooth);
+        const toothMat = new THREE.MeshBasicMaterial({color: 0xffffeb});
+        const toothGeo = new THREE.ConeGeometry(0.04, 0.12, 4);
+        for(let row=0; row<2; row++) {
+          for(let i=0; i<12; i++) {
+              const tooth = new THREE.Mesh(toothGeo, toothMat);
+              const angle = (i/12) * Math.PI - Math.PI/2;
+              tooth.position.set(Math.cos(angle)*0.35, 0.05, Math.sin(angle)*0.35 - row*0.1);
+              tooth.rotation.x = Math.PI;
+              jaw.add(tooth);
+          }
         }
         g.add(jaw);
         g.userData.jaw = jaw;
 
-        // Gills
+        // Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.08, 16, 16);
+        const eyeMat = new THREE.MeshBasicMaterial({color: 0x000000});
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeL.position.set(0.45, 0.2, 1.8);
+        g.add(eyeL);
+        const eyeR = eyeL.clone(); eyeR.position.x = -0.45;
+        g.add(eyeR);
+
+        // Gills - better rendering
         for(let i=0; i<5; i++) {
-            const gillGeo = new THREE.TorusGeometry(0.4, 0.02, 8, 16, Math.PI);
-            const gill = new THREE.Mesh(gillGeo, new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5}));
-            gill.position.set(0.7, 0, 1.2 - i*0.15);
-            gill.rotation.y = Math.PI/2;
+            const gillGeo = new THREE.BoxGeometry(0.02, 0.4, 0.05);
+            const gill = new THREE.Mesh(gillGeo, new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.6}));
+            gill.position.set(0.78, 0, 1.0 - i*0.18);
+            gill.rotation.y = 0.2;
             g.add(gill);
-            const gillR = gill.clone(); gillR.position.x = -0.7;
+            const gillR = gill.clone(); gillR.position.x = -0.78; gillR.rotation.y = -0.2;
             g.add(gillR);
         }
 
-        // Fins
-        const dFin = new THREE.Mesh(new THREE.ConeGeometry(0.3, 1.2, 4), mat);
-        dFin.position.set(0, 1.0, -0.2);
+        // Fins - Shark style
+        const dFin = new THREE.Mesh(new THREE.ConeGeometry(0.4, 1.5, 4), mat);
+        dFin.position.set(0, 0.8, -0.3);
         dFin.rotation.x = Math.PI/4;
+        dFin.scale.set(1, 1, 0.2);
         g.add(dFin);
 
-        const pFinL = new THREE.Mesh(new THREE.ConeGeometry(0.2, 1.5, 4), mat);
-        pFinL.position.set(1.1, -0.2, 0.8);
-        pFinL.rotation.z = -Math.PI/2.5;
-        pFinL.rotation.x = Math.PI/6;
+        const pFinL = new THREE.Mesh(new THREE.ConeGeometry(0.3, 2.0, 4), mat);
+        pFinL.position.set(0.8, -0.2, 0.8);
+        pFinL.rotation.z = -Math.PI/2.2;
+        pFinL.rotation.x = Math.PI/8;
+        pFinL.scale.set(1, 1, 0.15);
         g.add(pFinL);
-        const pFinR = pFinL.clone(); pFinR.position.x = -1.1; pFinR.rotation.z = Math.PI/2.5;
+        const pFinR = pFinL.clone(); pFinR.position.x = -0.8; pFinR.rotation.z = Math.PI/2.2;
         g.add(pFinR);
 
-        // Tail (Caudal Fin)
+        // Tail (Caudal Fin) - Large and powerful
         const tailJoint = new THREE.Group();
-        tailJoint.position.z = -3.2;
-        const tailFinU = new THREE.Mesh(new THREE.ConeGeometry(0.3, 1.8, 4), mat);
-        tailFinU.position.y = 0.7;
-        tailFinU.rotation.x = -Math.PI/6;
+        tailJoint.position.z = -1.75;
+        const tailFinU = new THREE.Mesh(new THREE.ConeGeometry(0.4, 2.2, 4), mat);
+        tailFinU.position.set(0, 0.9, -0.4);
+        tailFinU.rotation.x = -Math.PI/5;
+        tailFinU.scale.set(1, 1, 0.1);
         tailJoint.add(tailFinU);
-        const tailFinL = new THREE.Mesh(new THREE.ConeGeometry(0.25, 1.2, 4), mat);
-        tailFinL.position.y = -0.5;
-        tailFinL.rotation.x = Math.PI/6;
+        const tailFinL = new THREE.Mesh(new THREE.ConeGeometry(0.35, 1.6, 4), mat);
+        tailFinL.position.set(0, -0.6, -0.3);
+        tailFinL.rotation.x = Math.PI/5;
+        tailFinL.scale.set(1, 1, 0.1);
         tailJoint.add(tailFinL);
         g.add(tailJoint);
         g.userData.tail = tailJoint;
 
     } else {
-        // Generic Procedural Life (Trilobites/Fish)
-        const isTrilobite = Math.random() > 0.5;
-        if(isTrilobite) {
+        // Generic Procedural Life based on era type
+        if(type === 'micro') {
+            const body = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 1), mat);
+            g.add(body);
+            for(let i=0; i<8; i++) {
+                const cilia = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0, 0.8), mat);
+                const phi = Math.random()*Math.PI*2, th = Math.random()*Math.PI;
+                cilia.position.setFromSphericalCoords(0.4, th, phi);
+                cilia.lookAt(0,0,0);
+                g.add(cilia);
+            }
+        } else if(type === 'ancient') {
+            // Trilobite-like
             const body = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 12), mat);
             body.rotation.x = Math.PI/2;
-            body.scale.set(1, 0.3, 2.0);
+            body.scale.set(1, 0.3, 1.8);
             g.add(body);
-            for(let i=0; i<6; i++) {
-                const leg = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), mat);
-                leg.position.set(0.4, -0.1, 0.4 - i*0.2);
-                leg.rotation.z = Math.PI/3;
-                g.add(leg);
-                const legR = leg.clone(); legR.position.x = -0.4; legR.rotation.z = -Math.PI/3;
-                g.add(legR);
+            for(let i=0; i<8; i++) {
+                const segment = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.05, 8, 12, Math.PI), mat);
+                segment.position.z = 0.6 - i*0.2;
+                segment.rotation.x = Math.PI/2;
+                g.add(segment);
             }
         } else {
-            const body=new THREE.Mesh(new THREE.SphereGeometry(0.8,16,12),mat); body.scale.set(1,1,2.5); g.add(body);
-            const head=new THREE.Mesh(new THREE.ConeGeometry(0.7,1.5,16),mat); head.rotation.x=Math.PI/2; head.position.z=1.5; g.add(head);
-            const tail=new THREE.Mesh(new THREE.ConeGeometry(0.4,1.5,4),mat); tail.position.z=-1.8; tail.rotation.x=-Math.PI/2; g.add(tail);
+            const body=new THREE.Mesh(new THREE.SphereGeometry(0.8,16,12),mat); body.scale.set(1,0.8,2.2); g.add(body);
+            const head=new THREE.Mesh(new THREE.ConeGeometry(0.7,1.2,16),mat); head.rotation.x=Math.PI/2; head.position.z=1.2; g.add(head);
+
+            const tailJoint = new THREE.Group();
+            tailJoint.position.z = -1.2;
+            const tail=new THREE.Mesh(new THREE.ConeGeometry(0.5,1.2,4),mat);
+            tail.rotation.x=-Math.PI/2;
+            tail.scale.set(1, 1, 0.1);
+            tailJoint.add(tail);
+            g.add(tailJoint);
+            g.userData.tail = tailJoint;
         }
     }
 
@@ -557,15 +619,21 @@ class OceanEngine {
     const c1=new THREE.Color(0x010b19), c2=new THREE.Color(0x00050c);
     this.scene.background=c1.clone().lerp(c2,depth);
 
-    // Marine Snow falling animation
+    // Marine Snow falling with horizontal drift
     const positions = this.particles.geometry.attributes.position.array;
     const velocities = this.particles.geometry.attributes.velocity.array;
     for(let i=0; i<positions.length/3; i++) {
         positions[i*3+1] -= velocities[i];
-        if(positions[i*3+1] < this.camera.position.y - 100) positions[i*3+1] = this.camera.position.y + 100;
+        // Add subtle horizontal drift based on time and height
+        positions[i*3] += Math.sin(time * 0.5 + positions[i*3+1] * 0.1) * 0.01;
+
+        if(positions[i*3+1] < this.camera.position.y - 100) {
+            positions[i*3+1] = this.camera.position.y + 100;
+            positions[i*3] = (Math.random()-0.5)*150;
+        }
     }
     this.particles.geometry.attributes.position.needsUpdate = true;
-    this.particles.rotation.y += 0.0005;
+    this.particles.rotation.y += 0.0003;
 
     this.bubbles.children.forEach(b=>{
       b.position.y += b.userData.speed;
@@ -587,10 +655,14 @@ class OceanEngine {
       if(c.userData.isMeg) {
           if(c.userData.tail) c.userData.tail.rotation.y = Math.sin(time*3)*0.4;
           if(c.userData.jaw) c.userData.jaw.rotation.x = 0.2 + Math.sin(time*0.5)*0.1;
+          // Slowly track camera
+          c.lookAt(0, this.camera.position.y - 10, 0);
       } else {
-          // Generic tail animation for fish
-          const tail = c.children.find(child => child.geometry?.type === "ConeGeometry" && child.position.z < 0);
-          if(tail) tail.rotation.z = Math.sin(time*4 + i)*0.3;
+          if(c.userData.tail) c.userData.tail.rotation.y = Math.sin(time*5 + i)*0.5;
+          // Microbes vibrate
+          if(c.children.length > 5 && !c.userData.tail) {
+              c.position.y += Math.sin(time*10 + i)*0.005;
+          }
       }
     });
 
@@ -668,12 +740,20 @@ function renderEnc() {
     const div=document.createElement('div'); div.className='enc-item'; div.innerHTML=`<strong>${s.name}</strong><br><small>${s.era}</small>`;
     div.onclick=()=>{
       document.querySelectorAll('.enc-item').forEach(i=>i.classList.remove('active')); div.classList.add('active');
+      const imgHtml = s.imgs.map(img => `<img src="${img}" style="width:100%;height:200px;object-fit:cover;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">`).join('');
       document.getElementById('enc-main').innerHTML=`
-        <img src="${s.img}" style="width:100%;height:250px;object-fit:cover;border-radius:1rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">
-        <h2 style="color:${s.color}">${s.name}</h2>
-        <p><em>${s.sci}</em></p>
-        <p style="margin-top:1rem">${s.desc}</p>
-        <p style="margin-top:1rem;color:var(--slate-500)">Length: ${s.len}m</p>
+        <div style="display:flex;gap:0.5rem;overflow-x:auto;margin-bottom:1.5rem;padding-bottom:0.5rem;">${imgHtml}</div>
+        <h2 style="color:var(--bio-cyan)">${s.name}</h2>
+        <p style="font-family:'Outfit';font-size:0.8rem;color:var(--slate-500);text-transform:uppercase;margin-bottom:1rem;">${s.sci}</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Diet</span><strong>${s.diet}</strong></div>
+            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Habitat</span><strong>${s.habitat}</strong></div>
+            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Length</span><strong>${s.len}m</strong></div>
+            <div class="glass" style="padding:0.75rem;border-radius:0.5rem;"><span class="g-lbl" style="margin:0">Era</span><strong>${s.era}</strong></div>
+        </div>
+
+        <p style="line-height:1.6;color:var(--slate-300)">${s.desc}</p>
       `;
     };
     list.appendChild(div);
@@ -682,14 +762,33 @@ function renderEnc() {
 
 function renderTree() {
   const mount=document.getElementById('tree-mount');
-  let svg=`<svg width="800" height="500">`;
-  TREE_NODES.forEach(n=>{ if(n.pid){ const p=TREE_NODES.find(x=>x.id===n.pid); svg+=`<line x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" stroke="var(--bio-cyan)" stroke-width="2" opacity="0.3"/>`; } });
+  const width = 800, height = 500;
+  let svg=`<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+
+  // Connection lines with gradients
+  svg += `<defs>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="var(--bio-cyan)" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="var(--bio-cyan)" stop-opacity="0.6" />
+    </linearGradient>
+  </defs>`;
+
+  TREE_NODES.forEach(n=>{
+    if(n.pid){
+      const p=TREE_NODES.find(x=>x.id===n.pid);
+      svg+=`<path d="M ${p.x} ${p.y} C ${p.x+50} ${p.y}, ${n.x-50} ${n.y}, ${n.x} ${n.y}" stroke="url(#lineGrad)" stroke-width="2" fill="none" opacity="0.5">
+        <animate attributeName="stroke-dasharray" from="0,1000" to="1000,0" dur="3s" repeatCount="indefinite" />
+      </path>`;
+    }
+  });
+
   TREE_NODES.forEach(n=>{
     svg+=`<g class="tree-node" style="cursor:pointer" onclick="showTreeNode('${n.id}')">
-      <circle cx="${n.x}" cy="${n.y}" r="10" fill="var(--abyss)" stroke="var(--bio-cyan)" stroke-width="2">
-        <animate attributeName="r" values="10;12;10" dur="2s" repeatCount="indefinite" />
+      <circle cx="${n.x}" cy="${n.y}" r="12" fill="var(--slate-950)" stroke="var(--bio-cyan)" stroke-width="2" style="transition: all 0.3s;">
+        <animate attributeName="stroke-opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
       </circle>
-      <text x="${n.x+18}" y="${n.y+5}" fill="#fff" font-size="11" font-weight="600" style="pointer-events:none; text-shadow: 0 0 5px #000;">${n.lbl}</text>
+      <circle cx="${n.x}" cy="${n.y}" r="4" fill="var(--bio-cyan)" />
+      <text x="${n.x}" y="${n.y+25}" fill="#fff" font-size="10" font-weight="700" text-anchor="middle" style="pointer-events:none; text-transform:uppercase; letter-spacing:0.05em; filter: drop-shadow(0 0 2px #000);">${n.lbl}</text>
     </g>`;
   });
   svg+=`</svg>`; mount.innerHTML=svg;
@@ -727,42 +826,58 @@ function initGlobe() {
 
 function updateGlobeTexture(zone) {
     if(!globeCtx) return;
+    // Deep ocean background
     globeCtx.fillStyle='#00050c'; globeCtx.fillRect(0,0,512,256);
 
-    // Seeded procedural landmass generation
-    const seed = zone * 7.7;
-    const pRand = (s) => Math.sin(s) * 10000 - Math.floor(Math.sin(s) * 10000);
+    // Grid lines
+    globeCtx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+    globeCtx.lineWidth = 1;
+    for(let i=0; i<512; i+=32) { globeCtx.beginPath(); globeCtx.moveTo(i,0); globeCtx.lineTo(i,256); globeCtx.stroke(); }
+    for(let i=0; i<256; i+=32) { globeCtx.beginPath(); globeCtx.moveTo(0,i); globeCtx.lineTo(512,i); globeCtx.stroke(); }
 
-    // Water details
-    globeCtx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
-    for(let i=0; i<5; i++) {
-        globeCtx.beginPath(); globeCtx.arc(pRand(seed+i)*512, pRand(seed+i+1)*256, 100, 0, Math.PI*2); globeCtx.stroke();
-    }
+    const seed = zone * 13.37;
+    const pRand = (s) => Math.abs(Math.sin(s) * 10000 % 1);
 
-    globeCtx.fillStyle='#0df2a3';
-    const numContinents = 3 + Math.floor(zone / 1.5);
+    // Landmass color shifts based on era
+    const colors = ['#ff6b4a', '#0df2a3', '#00f0ff', '#0df2a3', '#00f0ff', '#ff6b4a', '#00f0ff', '#0df2a3'];
+    globeCtx.fillStyle = colors[zone-1];
+
+    const numContinents = 2 + Math.floor(zone * 0.8);
     for(let i=0; i<numContinents; i++) {
-        const x = pRand(seed + i * 1.1) * 512;
-        const y = pRand(seed + i * 2.2) * 256;
-        const size = 20 + pRand(seed + i * 3.3) * 60;
+        const x = pRand(seed + i) * 512;
+        const y = pRand(seed + i + 1) * 256;
+        const baseSize = 15 + pRand(seed + i + 2) * 50;
 
-        // Blobs for continents
+        // Complex fractal-like continent shapes
         globeCtx.beginPath();
-        globeCtx.moveTo(x, y);
-        for(let j=0; j<8; j++) {
-            const ang = (j/8) * Math.PI * 2;
-            const r = size * (0.8 + pRand(seed + i + j) * 0.4);
-            globeCtx.lineTo(x + Math.cos(ang)*r, y + Math.sin(ang)*r);
+        for(let j=0; j<24; j++) {
+            const ang = (j/24) * Math.PI * 2;
+            const r = baseSize * (0.7 + pRand(seed + i + j) * 0.6);
+            const px = x + Math.cos(ang)*r;
+            const py = y + Math.sin(ang)*r;
+            if(j===0) globeCtx.moveTo(px, py);
+            else globeCtx.lineTo(px, py);
         }
         globeCtx.closePath();
+
+        // Inner glow and fill
+        const grad = globeCtx.createRadialGradient(x, y, 0, x, y, baseSize * 1.5);
+        grad.addColorStop(0, colors[zone-1]);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        globeCtx.fillStyle = grad;
         globeCtx.fill();
 
-        // Glow effect
-        globeCtx.shadowColor = '#0df2a3';
-        globeCtx.shadowBlur = 15;
+        globeCtx.strokeStyle = colors[zone-1];
+        globeCtx.lineWidth = 2;
         globeCtx.stroke();
-        globeCtx.shadowBlur = 0;
     }
+
+    // Coastal details
+    globeCtx.shadowBlur = 10;
+    globeCtx.shadowColor = colors[zone-1];
+    globeCtx.stroke();
+    globeCtx.shadowBlur = 0;
+
     if(globeTex) globeTex.needsUpdate = true;
 }
 
@@ -771,20 +886,28 @@ function switchTab(t) {
     const content = document.getElementById('dash-content');
     if(t === 'quiz') {
         const qz = QUIZZES[activeZone] || QUIZZES[1];
-        content.innerHTML = `<h3>${qz.q}</h3>
-            <div style="margin-top:1rem">
-                ${qz.opts.map((o, i) => `<button class="quiz-opt" onclick="checkQuiz(${i})">${o}</button>`).join('')}
-            </div>
-            <div id="quiz-fb" style="margin-top:1.5rem"></div>`;
+        content.innerHTML = `
+            <div class="glass" style="padding:1.5rem;border-radius:1rem;border-left:4px solid var(--bio-cyan)">
+                <span class="g-lbl" style="margin-bottom:0.5rem">Mission: ${ZONES[activeZone-1].name}</span>
+                <h3 style="font-size:1.4rem;line-height:1.3;margin-bottom:1.5rem;">${qz.q}</h3>
+                <div style="display:grid;gap:0.75rem">
+                    ${qz.opts.map((o, i) => `<button class="quiz-opt" onclick="checkQuiz(${i})">${o}</button>`).join('')}
+                </div>
+                <div id="quiz-fb" style="margin-top:1.5rem"></div>
+            </div>`;
     } else {
         const earned = Object.keys(scores).filter(k => scores[k]).length;
-        content.innerHTML = `<h3>Research Badges</h3>
-            <p style="margin-bottom:1rem;color:var(--slate-400)">Milestones cleared: ${earned} of 8</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(100px, 1fr));gap:1rem;">
+        content.innerHTML = `
+            <div style="text-align:center;margin-bottom:2rem;">
+                <div style="font-size:3rem;font-weight:900;color:var(--bio-cyan)">${earned}/8</div>
+                <div class="g-lbl">Oceanic Milestones Achieved</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:1rem;">
                 ${ZONES.map(z => `
-                    <div style="padding:1rem;background:rgba(255,255,255,${scores[z.index]?0.1:0.02});border-radius:1rem;text-align:center;border:1px solid ${scores[z.index]?'var(--bio-cyan)':'transparent'}">
-                        <div style="font-size:2rem;filter:${scores[z.index]?'none':'grayscale(1) opacity(0.3)'}">${scores[z.index]?'🏆':'🔒'}</div>
-                        <div style="font-size:0.6rem;margin-top:0.5rem">${z.era}</div>
+                    <div class="glass" style="padding:1.25rem;text-align:center;border-color:${scores[z.index]?'var(--bio-cyan)':'rgba(255,255,255,0.05)'};opacity:${scores[z.index]?1:0.5}">
+                        <div style="font-size:2.5rem;margin-bottom:0.5rem;filter:${scores[z.index]?'drop-shadow(0 0 10px var(--bio-cyan))':'grayscale(1)'}">${scores[z.index]?'💠':'🌑'}</div>
+                        <div style="font-family:'Outfit';font-size:0.65rem;font-weight:800;color:#fff">${z.era}</div>
+                        <div style="font-size:0.5rem;color:var(--slate-500);margin-top:0.25rem">${scores[z.index]?'Unlocked':'Locked'}</div>
                     </div>
                 `).join('')}
             </div>`;
