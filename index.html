@@ -224,14 +224,14 @@ const ZONES=[
 ];
 
 const SPECIES=[
-  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth through photosynthesis. These structures are built by cyanobacteria trapping sediment in thin layers.",diet:"Photosynthetic",habitat:"Shallow Marine",len:1.2,behavior:"Stationary colonial growth",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 195948.png","/tmp/file_attachments/Screenshot 2026-06-24 200325.png"]},
-  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"One of the earliest-known groups of arthropods. They flourished in Palezoic oceans for over 270 million years.",diet:"Detritivore",habitat:"Benthic (Seafloor)",len:0.3,behavior:"Scavenging on the sea floor",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200027.png"]},
-  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The 'abnormal shrimp' was a giant predator with complex eyes and grasping frontal appendages.",diet:"Carnivore",habitat:"Pelagic",len:1.0,behavior:"Apex predator of the Cambrian",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200127.png"]},
-  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"An apex predator armored fish. Instead of teeth, it possessed two pairs of sharp bony plates which formed a beak-like structure.",diet:"Apex Carnivore",habitat:"Coastal/Deep",len:6.0,behavior:"Suction feeding and crushing shells",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200136.png"]},
-  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Famous for its long neck and four large flippers. Plesiosaurs were secondary marine reptiles, meaning they returned to the sea from land.",diet:"Piscivore",habitat:"Open Ocean",len:11.0,behavior:"Ambush predator using long neck",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200231.png"]},
-  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"The largest shark to ever live. It had a massive impact on the structure of marine communities during its reign.",diet:"Apex Carnivore (Whales)",habitat:"Global Oceans",len:16.0,behavior:"Active predator across oceans",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200242.png"]},
-  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"The largest animal ever known to have lived. Despite its size, it feeds almost exclusively on tiny shrimp-like animals called krill.",diet:"Filter Feeder",habitat:"Global Oceans",len:30.0,behavior:"Long-distance migration",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200302.png"]},
-  {id:"future_spec",name:"Future Entity",sci:"Speculatio futurus",era:"Future",desc:"A bio-synthetic hybrid designed to monitor deep-sea thermal vents and sequester carbon in the post-industrial era.",diet:"Thermal/Chemical",habitat:"Abyssal Vents",len:2.5,behavior:"Autonomous ecological maintenance",imgs:["/tmp/file_attachments/Screenshot 2026-06-24 200313.png"]}
+  {id:"stromatolite",name:"Stromatolite",sci:"Laminopora antiqua",era:"Archean",desc:"Microbial mats that oxygenated Earth through photosynthesis. These structures are built by cyanobacteria trapping sediment in thin layers.",diet:"Photosynthetic",habitat:"Shallow Marine",len:1.2,behavior:"Stationary colonial growth"},
+  {id:"trilobite",name:"Trilobite",sci:"Elrathia kingii",era:"Cambrian",desc:"One of the earliest-known groups of arthropods. They flourished in Palezoic oceans for over 270 million years.",diet:"Detritivore",habitat:"Benthic (Seafloor)",len:0.3,behavior:"Scavenging on the sea floor"},
+  {id:"anomalocaris",name:"Anomalocaris",sci:"A. canadensis",era:"Cambrian",desc:"The 'abnormal shrimp' was a giant predator with complex eyes and grasping frontal appendages.",diet:"Carnivore",habitat:"Pelagic",len:1.0,behavior:"Apex predator of the Cambrian"},
+  {id:"dunkleosteus",name:"Dunkleosteus",sci:"D. terrelli",era:"Devonian",desc:"An apex predator armored fish. Instead of teeth, it possessed two pairs of sharp bony plates which formed a beak-like structure.",diet:"Apex Carnivore",habitat:"Coastal/Deep",len:6.0,behavior:"Suction feeding and crushing shells"},
+  {id:"plesiosaur",name:"Plesiosaur",sci:"P. dolichodeirus",era:"Jurassic",desc:"Famous for its long neck and four large flippers. Plesiosaurs were secondary marine reptiles, meaning they returned to the sea from land.",diet:"Piscivore",habitat:"Open Ocean",len:11.0,behavior:"Ambush predator using long neck"},
+  {id:"megalodon",name:"Megalodon",sci:"Otodus megalodon",era:"Miocene",desc:"The largest shark to ever live. It had a massive impact on the structure of marine communities during its reign.",diet:"Apex Carnivore (Whales)",habitat:"Global Oceans",len:16.0,behavior:"Active predator across oceans"},
+  {id:"blue_whale",name:"Blue Whale",sci:"B. musculus",era:"Modern",desc:"The largest animal ever known to have lived. Despite its size, it feeds almost exclusively on tiny shrimp-like animals called krill.",diet:"Filter Feeder",habitat:"Global Oceans",len:30.0,behavior:"Long-distance migration"},
+  {id:"future_spec",name:"Future Entity",sci:"Speculatio futurus",era:"Future",desc:"A bio-synthetic hybrid designed to monitor deep-sea thermal vents and sequester carbon in the post-industrial era.",diet:"Thermal/Chemical",habitat:"Abyssal Vents",len:2.5,behavior:"Autonomous ecological maintenance"}
 ];
 
 const QUIZZES={
@@ -822,7 +822,6 @@ function renderEnc() {
     const div=document.createElement('div'); div.className='enc-item'; div.innerHTML=`<strong>${s.name}</strong><br><small>${s.era}</small>`;
     div.onclick=()=>{
       document.querySelectorAll('.enc-item').forEach(i=>i.classList.remove('active')); div.classList.add('active');
-      const imgHtml = s.imgs.map(img => `<img src="${img}" style="flex:0 0 250px;height:180px;object-fit:cover;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.1)" alt="${s.name}">`).join('');
 
       const humanHeight = 1.8;
       const ratio = Math.min(1, humanHeight / s.len);
@@ -830,7 +829,6 @@ function renderEnc() {
       const hSize = sSize * ratio;
 
       document.getElementById('enc-main').innerHTML=`
-        <div style="display:flex;gap:1rem;overflow-x:auto;margin-bottom:1.5rem;padding-bottom:0.5rem;scrollbar-width:thin;">${imgHtml}</div>
         <h2 style="color:var(--bio-cyan)">${s.name}</h2>
         <p style="font-family:'Outfit';font-size:0.8rem;color:var(--slate-500);text-transform:uppercase;margin-bottom:1rem;">${s.sci}</p>
 
